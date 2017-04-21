@@ -1,13 +1,14 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="UTF-8" />
-        <title>{% block title %}Louvre{% endblock %}</title>
-        {% block stylesheets %}{% endblock %}
-        <link rel="icon" type="image" href="{{ asset('medias/logo.png') }}" />
-    </head>
-    <body>
-        {% block body %}{% endblock %}
-        {% block javascripts %}{% endblock %}
-    </body>
+  <head>
+    <meta charset="UTF-8" />
+    <title>{% block title %}Louvre{% endblock %}</title>
+    {% block stylesheets %}{% endblock %}
+    <link rel="icon" type="image" href="{{ asset('medias/logo.png') }}" />
+    <link href="css/custom.css" rel="stylesheet">
+  </head>  
+  <body>
+    {% block body %}{% endblock %}
+    {% block javascripts %}{% endblock %}
+  </body>
 </html>
