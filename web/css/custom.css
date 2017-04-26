@@ -1,8 +1,46 @@
-body {
-    width: 100%;
+html {
+  	margin:0;
+  	padding:0;
 }
 
-.bgd-default {
-    background-image: url(media/background_pano.jpg);
-    width: 100%;
+body {
+	width: 100%;
+  	background-image: url('../img/background2.jpg'); 
+  	background-repeat: no-repeat;
+  	background-attachment: fixed;
+  	background-position: top;
+  	background-size: cover; 
 }
+
+.banner {
+	background-color: rgba(217, 217, 217, 0.9);
+	margin-bottom: 75px;
+	height: 400px;
+}
+
+/*-------------------------------------------------------------------------*/
+/* NAVBAR                                                                  */
+/*-------------------------------------------------------------------------*/
+
+.mb-navbar {
+	background-color: rgba(217, 217, 217, 0.9);
+	margin-right: 0px;
+	margin-bottom: 75px;
+	height: 50px;
+}
+
+#logo {
+	width: 63%;
+}
+
+/*-------------------------------------------------------------------------*/
+/* DASHBOARD                                                               */
+/*-------------------------------------------------------------------------*/
+
+.banner-dbd {
+	background-color: rgba(217, 217, 217, 0.6);
+	margin-bottom: 75px;
+	height: 400px;
+}
+
+
