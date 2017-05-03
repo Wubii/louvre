@@ -14,7 +14,7 @@
           <hr>
           <h3 style="text-align: center">Votre adresse mail</h3>   
           <div class="row">
-            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="text-align: center">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-offset-4 col-lg-4" style="text-align: center">
               {{ form(form.email) }}
             </div>     
           </div>
@@ -24,7 +24,7 @@
         <div class="banner col-xs-offset-1 col-xs-10 col-sm-offset-1 col-sm-10 col-md-offset-1 col-md-10 col-lg-offset-1 col-lg-10">
           <h2 style="text-align: center">Détails des participants</h2>
           {{ form(form.users) }}
-          <a href="#" id="add_user" class="btn btn-default">Ajouter un participant</a>
+          <a href="#" id="add_user" class="btn btn-default pull-right" style="margin-right: 5px">Ajouter un participant</a>
           {#{{ form(form.save) }}#}
         </div>
       </div>
