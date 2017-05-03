@@ -8,6 +8,7 @@ use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class MbOrderType extends AbstractType
@@ -29,6 +30,7 @@ class MbOrderType extends AbstractType
                 'allow_delete' => true,
                 'by_reference' => false,
             ));
+            //->add('save', SubmitType::class);
     }
     
     /**
