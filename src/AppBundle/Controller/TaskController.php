@@ -6,20 +6,31 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 
-use AppBundle\Entity\MbOrder;
+use AppBundle\Entity\MbTask;
+use AppBundle\Entity\MbTag;
 
-use AppBundle\Form\MbOrderType;
+use AppBundle\Form\MbTaskType;
+use AppBundle\Form\MbTagType;
 
-class DefaultController extends Controller
+
+class TaskController extends Controller
 {
     /**
-     * @Route("/", name="homepage")
+     * @Route("/task", name="task")
      */
-    public function indexAction(Request $request)
+    public function formAction(Request $request)
     {
-        $order = new MbOrder();
+        $task = new MbTask();
 
-        $form = $this->get('form.factory')->create(MbOrderType::class, $order);
+        $tag = new MbTag();
+        $tag->setName('tag');
+        $task->getTags()->add($tag);
+
+        $tag = new MbTag();
+        $tag->setName('tag');
+        $task->getTags()->add($tag);
+
+        $form = $this->get('form.factory')->create(MbTaskType::class, $task);
 
         if($request->isMethod('POST'))
         {
@@ -27,16 +38,12 @@ class DefaultController extends Controller
             
             if($form->isValid())
             {
-                // $em = $this->getDoctrine()->getManager();
-                // $em->persist($advert);
-                // $em->flush();
-                
                 return $this->redirectToRoute('homepage');
             }
         }
 
         // replace this example code with whatever you need
-        return $this->render('default/index.html.twig', [
+        return $this->render('default/task.html.twig', [
             'form' => $form->createView(),
             'base_dir' => realpath($this->getParameter('kernel.root_dir').'/..').DIRECTORY_SEPARATOR,
         ]);
