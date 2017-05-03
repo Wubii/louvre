@@ -3,18 +3,91 @@
 {% block body %}
       <div class="row" style="margin-right: 0">
         <div class="banner col-xs-offset-1 col-xs-10 col-sm-offset-1 col-sm-10 col-md-offset-1 col-md-10 col-lg-offset-1 col-lg-10">
-          <h2 style="text-align: center">Combien de places souhaitez-vous réserver ?</h2>
+          <h3 style="text-align: center">Quel jour souhaitez-vous venir ?</h3>   
+          <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="text-align: center">
+              {#{{ form(form.visiteDate) }}#}
+              <input type="text" name="date" id="date" placeholder="jj/mm/aaaa">
+            </div>     
+          </div>
+          <hr>
+          <h3 style="text-align: center">Votre adresse mail</h3>   
+          <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="text-align: center">
+              {{ form(form.email) }}
+            </div>     
+          </div>
         </div>
       </div>
       <div class="row" style="margin-right: 0">
         <div class="banner col-xs-offset-1 col-xs-10 col-sm-offset-1 col-sm-10 col-md-offset-1 col-md-10 col-lg-offset-1 col-lg-10">
-          <h2 style="text-align: center">Quel jour souhaitez-vous venir ?</h2>        
-        </div>
-      </div>
-      <div class="row" style="margin-right: 0">
-        <div class="banner col-xs-offset-1 col-xs-10 col-sm-offset-1 col-sm-10 col-md-offset-1 col-md-10 col-lg-offset-1 col-lg-10">
-          <h2 style="text-align: center">Détails des participants</h2>        
+          <h2 style="text-align: center">Détails des participants</h2>
+          {{ form(form.users) }}
+          <a href="#" id="add_user" class="btn btn-default">Ajouter un participant</a>
         </div>
       </div>
     </div>
+{% endblock %}
+
+{% block javascript %}
+
+  <script type="text/javascript"> $('#date').datepicker(); </script>
+
+  <script type="text/javascript">
+  $(document).ready(function()
+  {
+    var $container = $('div#appbundle_mborder_users');
+    var index = $container.find(':input').length;
+
+    $('#add_user').click(function(e)
+    {
+      addUser($container);
+      e.preventDefault();
+      return false;
+    });
+
+    if(index == 0)
+    {
+      addUser($container);
+    } else {
+      $container.children('div').each(function()
+      {
+        addDeleteLink($(this));
+      });
+    }
+
+    function addUser($container)
+    {
+      var template = $container.attr('data-prototype')
+        .replace(/__name__label__/g, 'Participant n°' + (index))
+        .replace(/__name__/g, index)
+      ;
+
+      var $prototype = $(template);
+
+      addDeleteLink($prototype);
+
+      $container.append($prototype);
+
+      index++;
+    }
+
+    function addDeleteLink($prototype)
+    {
+      var $deleteLink = $('<a href="#" class="btn btn-danger">Supprimer</a>');
+
+      $prototype.append($deleteLink);
+
+      $deleteLink.click(function(e)
+      {
+        $prototype.remove();
+
+        e.preventDefault();
+        return false;
+      });
+    }
+
+  })
+</script>
+
 {% endblock %}

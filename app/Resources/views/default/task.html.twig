@@ -1,0 +1,73 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+  <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">  
+    <div class="well tags">
+      {{ form(form.tags) }}
+      <a href="#" id="add_tag" class="btn btn-default">Ajouter un tag</a>
+    </div>
+  </div>
+{% endblock %}
+
+{% block javascript %}
+
+<script type="text/javascript">
+  $(document).ready(function()
+  {
+    var $container = $('div#mb_task_tags');
+    var index = $container.find(':input').length;
+
+    $('#add_tag').click(function(e)
+    {
+      addTag($container);
+      e.preventDefault();
+      return false;
+    });
+
+    if(index == 0)
+    {
+      addTag($container);
+    } else {
+      $container.children('div').each(function()
+      {
+        addDeleteLink($(this));
+      });
+    }
+
+    function addTag($container)
+    {
+      var template = $container.attr('data-prototype')
+        .replace(/__name__label__/g, 'tag n°' + (index+1))
+        .replace(/__name__/g, index)
+      ;
+
+      var $prototype = $(template);
+
+      addDeleteLink($prototype);
+
+      $container.append($prototype);
+
+      index++;
+    }
+
+    function addDeleteLink($prototype)
+    {
+      var $deleteLink = $('<a href="#" class="btn btn-danger">Supprimer</a>');
+
+      $prototype.append($deleteLink);
+
+      $deleteLink.click(function(e)
+      {
+        $prototype.remove();
+
+        e.preventDefault();
+        return false;
+      });
+    }
+
+  })
+
+
+</script>
+
+{% endblock %}
