@@ -38,9 +38,9 @@ class MbTicket
     /**
      * @var string
      *
-     * @ORM\Column(name="idNunber", type="string", length=255)
+     * @ORM\Column(name="idNumber", type="string", length=255)
      */
-    private $idNunber;
+    private $idNumber;
 
 
     /**
@@ -102,27 +102,27 @@ class MbTicket
     }
 
     /**
-     * Set idNunber
+     * Set idNumber
      *
-     * @param string $idNunber
+     * @param string $idNumber
      *
      * @return MbTicket
      */
-    public function setIdNunber($idNunber)
+    public function setIdNumber($idNumber)
     {
-        $this->idNunber = $idNunber;
+        $this->idNumber = $idNumber;
 
         return $this;
     }
 
     /**
-     * Get idNunber
+     * Get idNumber
      *
      * @return string
      */
-    public function getIdNunber()
+    public function getIdNumber()
     {
-        return $this->idNunber;
+        return $this->idNumber;
     }
 }
 

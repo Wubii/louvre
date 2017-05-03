@@ -43,6 +43,16 @@ class MbOrder
     private $email;
 
     /**
+     * Many Users have Many Groups.
+     * @ORM\ManyToMany(targetEntity="MbUser")
+     * @ORM\JoinTable(name="mb_order_mb_user",
+     *      joinColumns={@ORM\JoinColumn(name="order_id", referencedColumnName="id")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="user_id", referencedColumnName="id")}
+     *      )
+     */
+    private $users;
+
+    /**
      * @var int
      *
      * @ORM\Column(name="reservationNumber", type="integer")
@@ -130,6 +140,30 @@ class MbOrder
     public function getEmail()
     {
         return $this->email;
+    }
+
+    /**
+     * Set users
+     *
+     * @param integer $users
+     *
+     * @return MbOrder
+     */
+    public function setUsers($users)
+    {
+        $this->users = $users;
+
+        return $this;
+    }
+
+    /**
+     * Get users
+     *
+     * @return int
+     */
+    public function getUsers()
+    {
+        return $this->users;
     }
 
     /**
