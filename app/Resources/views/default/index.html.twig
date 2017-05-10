@@ -1,40 +1,43 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
+
+      {{ form_start(form) }}
+      {{ form_errors(form) }}
       <div class="row" style="margin-right: 0">
-        {#{{ form_start(form) }}#}
         <div class="banner col-xs-offset-1 col-xs-10 col-sm-offset-1 col-sm-10 col-md-offset-1 col-md-10 col-lg-offset-1 col-lg-10">
           <h3 style="text-align: center">Quel jour souhaitez-vous venir ?</h3>   
           <div class="row">
-            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="text-align: center">
-              {#{{ form(form.visiteDate) }}#}
-              <input type="text" name="date" id="date" placeholder="jj/mm/aaaa">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-offset-3 col-lg-5">
+              <p>{{ form_row(form.visiteDate) }}</p>
+              <p>{{ form_row(form.duration) }}</p>
             </div>     
           </div>
           <hr>
           <h3 style="text-align: center">Votre adresse mail</h3>   
           <div class="row">
-            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-offset-4 col-lg-4" style="text-align: center">
-              {{ form(form.email) }}
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-offset-3 col-lg-5" style="text-align: center">
+              <p>{{form_row(form.email)}}</p>
             </div>     
           </div>
         </div>
       </div>
+
       <div class="row" style="margin-right: 0">
-        <div class="banner col-xs-offset-1 col-xs-10 col-sm-offset-1 col-sm-10 col-md-offset-1 col-md-10 col-lg-offset-1 col-lg-10">
+        <div class="banner col-lg-offset-1 col-lg-10">
           <h2 style="text-align: center">Détails des participants</h2>
-          {{ form(form.users) }}
+          {{ form_widget(form.users) }}
           <a href="#" id="add_user" class="btn btn-default pull-right" style="margin-right: 5px">Ajouter un participant</a>
-          {#{{ form(form.save) }}#}
+          {{ form_widget(form.save) }}
         </div>
       </div>
-      {#{{ form_end(form) }}#}
-    </div>
+      {{ form_end(form) }}
+
 {% endblock %}
 
 {% block javascript %}
 
-  <script type="text/javascript"> $('#date').datepicker(); </script>
+  <script type="text/javascript"> $('#appbundle_mborder_visiteDate').datepicker({ dateFormat: 'dd/mm/yy' }); </script>
 
   <script type="text/javascript">
   $(document).ready(function()
@@ -49,10 +52,8 @@
       return false;
     });
 
-    if(index == 0)
+    if(index > 1)
     {
-      addUser($container);
-    } else {
       $container.children('div').each(function()
       {
         addDeleteLink($(this));
@@ -62,7 +63,7 @@
     function addUser($container)
     {
       var template = $container.attr('data-prototype')
-        .replace(/__name__label__/g, 'Participant n°' + (index))
+        .replace(/__name__label__/g, 'Participant n°' + (index + 1))
         .replace(/__name__/g, index)
       ;
 
@@ -77,7 +78,7 @@
 
     function addDeleteLink($prototype)
     {
-      var $deleteLink = $('<a href="#" class="btn btn-danger pull-right" style="margin-right:20px">Supprimer</a>');
+      var $deleteLink = $('<a href="#" class="btn btn-danger pull-right" style="margin-right:30px; margin-top:10px;">Supprimer</a>');
 
       $prototype.append($deleteLink);
 
