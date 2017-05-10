@@ -43,11 +43,34 @@ class MbUser
     private $birthday;
 
     /**
+     * @var int
+     *
+     * @ORM\Column(name="isReduced", type="smallint")
+     */
+    private $isReduced;
+
+    /**
      * @var string
      *
      * @ORM\Column(name="country", type="string", length=255)
      */
     private $country;
+
+    /**
+     * One User have One ticket.
+     * @ORM\OneToOne(targetEntity="MbTicket", cascade={"persist"})
+     * @ORM\JoinColumn(name="ticket_id", referencedColumnName="id")
+     */
+    private $ticket;
+
+    public function __construct()
+    {
+        $this->firstname = 'empty';
+        $this->lastname = 'empty';
+        $this->birthday = new \DateTime('now');
+        $this->country = 'none';
+        $this->ticket = null;
+    }
 
 
     /**
@@ -133,6 +156,30 @@ class MbUser
     }
 
     /**
+     * Set isReduced
+     *
+     * @param \DateTime $isReduced
+     *
+     * @return MbUser
+     */
+    public function setIsReduced($isReduced)
+    {
+        $this->isReduced = $isReduced;
+
+        return $this;
+    }
+
+    /**
+     * Get isReduced
+     *
+     * @return \DateTime
+     */
+    public function getIsReduced()
+    {
+        return $this->isReduced;
+    }
+
+    /**
      * Set country
      *
      * @param string $country
@@ -154,6 +201,30 @@ class MbUser
     public function getCountry()
     {
         return $this->country;
+    }
+
+    /**
+     * Set ticket
+     *
+     * @param object $ticket
+     *
+     * @return MbUser
+     */
+    public function setTicket($ticket)
+    {
+        $this->ticket = $ticket;
+
+        return $this;
+    }
+
+    /**
+     * Get ticket
+     *
+     * @return object
+     */
+    public function getTicket()
+    {
+        return $this->ticket;
     }
 }
 
