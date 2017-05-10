@@ -10,4 +10,23 @@ namespace AppBundle\Repository;
  */
 class MbTicketRepository extends \Doctrine\ORM\EntityRepository
 {
+	public function findAllTicketsByDate($date)
+	{
+		$em = $this->getEntityManager();
+		$qb = $em->createQueryBuilder();
+		$query = $qb->select('t')
+            ->from('AppBundle:MbTicket', 't')
+            ->where('t.date = :date')
+            ->setParameter('date', $date->format('Y-m-d'))
+            ->getQuery();
+
+		return $query->getResult();
+	}
+
+
+	public function getTicketNbByDate($date)
+	{
+		// Remplacer par une requête qui compte les éléments mais qui ne les récupère pas
+		return count(SELF::findAllTicketsByDate($date));
+	}
 }
