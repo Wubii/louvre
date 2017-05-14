@@ -24,6 +24,7 @@ class DefaultController extends Controller
     {
         $order = new MbOrder();
         $user = new MbUser();
+
         $order->getUsers()->add($user);
 
         $form = $this->get('form.factory')->create(MbOrderType::class, $order);
@@ -34,21 +35,15 @@ class DefaultController extends Controller
             
             if($form->isValid())
             {
-                //Vérifier qu'il reste des places
-                //Aller chercher tous les tickets de la date souhaitée par l'utilisateur
-                //Si le total des ticket + le nb de ticket de l'user est supérieur à 1000
-                //Alors la réservation n'est pas possible
-                //sinon foreach
-
                 $repository = $this->getDoctrine()->getManager()->getRepository('AppBundle:MbTicket');
                 $date = $order->getVisiteDate();
-                
                 $nbTicket = $repository->getTicketNbByDate($date);
                 $nbUsers = $order->getNbUsers();
 
                 $totalTickets = $nbTicket + $nbUsers;
 
-                if($totalTickets > 2)
+                // remplacer 1000 par const
+                if($totalTickets > 1000)
                 {
                     $request->getSession()->getFlashBag()->add('danger', 'Plus de places disponibles pour ce jour');
                     return $this->render('default/index.html.twig', [
@@ -61,6 +56,7 @@ class DefaultController extends Controller
                 {
                     $ticket = new MbTicket();
                     $ticket->setDate($order->getVisiteDate());
+                    $order->setReservationNumber();
                     // Pour vérifier un booléen, on le compare toujours à 0/false
                     // pas de convention qui dit que vrai = 1
                     if($user->getIsReduced() != 0)
@@ -72,7 +68,7 @@ class DefaultController extends Controller
                         $currentDate = new \DateTime('now');
                         $dateInterval = $currentDate->diff($user->getBirthday());
                         $age = $dateInterval->format('%y');
-                
+
                         if($age <= 4)
                         {
                             $ticket->setKind(MbTicket::TICKET_KIND_BABY);
@@ -98,8 +94,37 @@ class DefaultController extends Controller
                 $em->persist($order);
                 $em->flush();
 
+                $emailView = $this->renderView('Emails/registration.html.twig',array(
+                        'order' => $order)
+                );
+
+                return new Response($emailView);
+
+                /*$message = \Swift_Message::newInstance()
+                    ->setSubject('Vos billets pour le Louvre')
+                    ->setFrom('louvre@louvre-tickets.com')
+                    ->setTo($order->getEmail())
+                    ->setBody(
+                        $this->renderView('Emails/registration.html.twig',array(
+                            'order' => $order)
+                        ),
+                        'text/html'
+                    );
+                    /*
+                     * If you also want to include a plaintext version of the message
+                    ->addPart(
+                        $this->renderView(
+                            'Emails/registration.txt.twig',
+                            array('name' => $name)
+                        ),
+                        'text/plain'
+                    )
+                    */
+               /* ;
+                $this->get('mailer')->send($message);
+
                 $request->getSession()->getFlashBag()->add('success', 'Vos places ont bien été réservées');
-                return $this->redirectToRoute('homepage');
+                return $this->redirectToRoute('homepage');*/
             }
         }
 

@@ -73,7 +73,6 @@ class MbOrder
         $this->bookingDate = new \DateTime('now');
         $this->email = "empty";
         $this->users = new ArrayCollection();
-        $this->reservationNumber = 0;
     }
 
 
@@ -195,11 +194,11 @@ class MbOrder
      *
      * @return MbOrder
      */
-    public function setReservationNumber($reservationNumber)
+    public function setReservationNumber()
     {
-        $this->reservationNumber = $reservationNumber;
+        $this->reservationNumber = 'abcdefghijklmnpqrstuvwxyzABCDEFGHIJKLMNPQRSTUVWXYZ123456789';
 
-        return $this;
+        return substr(str_shuffle($this->reservationNumber),0,6);
     }
 
     /**
@@ -235,5 +234,19 @@ class MbOrder
     {
         return $this->duration;
     }
+
+    public function getPrice()
+    {
+        $price = 0;
+
+        foreach ($this->users as $user)
+        {
+            $price += $user->getTicket()->getPrice();
+        }
+
+        return $price;
+    }
+
+
 }
 

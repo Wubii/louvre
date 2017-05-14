@@ -23,12 +23,14 @@
         </div>
       </div>
 
+    <div class="col-lg-3"></div>
+
       <div class="row" style="margin-right: 0">
         <div class="banner col-lg-offset-1 col-lg-10">
           <h2 style="text-align: center">Détails des participants</h2>
-          {{ form_widget(form.users) }}
+          <p style="margin-top:50px">{{ form_widget(form.users) }}</p>
           <a href="#" id="add_user" class="btn btn-default pull-right" style="margin-right: 5px">Ajouter un participant</a>
-          {{ form_widget(form.save) }}
+          <span class="pull-right">{{ form_widget(form.save) }}</span>
         </div>
       </div>
       {{ form_end(form) }}
@@ -37,7 +39,7 @@
 
 {% block javascript %}
 
-  <script type="text/javascript"> $('#appbundle_mborder_visiteDate').datepicker({ dateFormat: 'dd/mm/yy' }); </script>
+  <script type="text/javascript"> $('#appbundle_mborder_visiteDate').datepicker({ dateFormat: 'dd/mm/yy', minDate: new Date.now() }); </script>
 
   <script type="text/javascript">
   $(document).ready(function()
@@ -78,7 +80,7 @@
 
     function addDeleteLink($prototype)
     {
-      var $deleteLink = $('<a href="#" class="btn btn-danger pull-right" style="margin-right:30px; margin-top:10px;">Supprimer</a>');
+      var $deleteLink = $('<a href="#" class="btn btn-danger pull-right" style="margin-right:20px; margin-top:10px;">Supprimer ce visiteur</a>');
 
       $prototype.append($deleteLink);
 

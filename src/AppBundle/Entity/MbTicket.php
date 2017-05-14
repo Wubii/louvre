@@ -103,28 +103,28 @@ class MbTicket
         $price = 0;
 
         switch ($this->kind) {
-            case TICKET_KIND_BABY:
-                $price = TICKET_KIND_BABY_PRICE;
+            case self::TICKET_KIND_BABY:
+                $price = self::TICKET_KIND_BABY_PRICE;
                 break;
 
-            case TICKET_KIND_CHILD:
-                $price = TICKET_KIND_CHILD_PRICE;
+            case self::TICKET_KIND_CHILD:
+                $price = self::TICKET_KIND_CHILD_PRICE;
                 break;
 
-            case TICKET_KIND_NORMAL:
-                $price = TICKET_KIND_NORMAL_PRICE;
+            case self::TICKET_KIND_NORMAL:
+                $price = self::TICKET_KIND_NORMAL_PRICE;
                 break;
 
-            case TICKET_KIND_SENIOR:
-                $price = TICKET_KIND_SENIOR_PRICE;
+            case self::TICKET_KIND_SENIOR:
+                $price = self::TICKET_KIND_SENIOR_PRICE;
                 break;
 
-            case TICKET_KIND_REDUCED:
-                $price = TICKET_KIND_REDUCED_PRICE;
+            case self::TICKET_KIND_REDUCED:
+                $price = self::TICKET_KIND_REDUCED_PRICE;
                 break;
             
             default:
-                $price = TICKET_KIND_NORMAL_PRICE;
+                $price = self::TICKET_KIND_NORMAL_PRICE;
                 break;
         }
         return $price;
@@ -140,28 +140,28 @@ class MbTicket
         $name = 0;
 
         switch ($this->kind) {
-            case TICKET_KIND_BABY:
-                $name = TICKET_KIND_BABY_NAME;
+            case self::TICKET_KIND_BABY:
+                $name = self::TICKET_KIND_BABY_NAME;
                 break;
 
-            case TICKET_KIND_CHILD:
-                $name = TICKET_KIND_CHILD_NAME;
+            case self::TICKET_KIND_CHILD:
+                $name = self::TICKET_KIND_CHILD_NAME;
                 break;
 
-            case TICKET_KIND_NORMAL:
-                $name = TICKET_KIND_NORMAL_NAME;
+            case self::TICKET_KIND_NORMAL:
+                $name = self::TICKET_KIND_NORMAL_NAME;
                 break;
 
-            case TICKET_KIND_SENIOR:
-                $name = TICKET_KIND_SENIOR_NAME;
+            case self::TICKET_KIND_SENIOR:
+                $name = self::TICKET_KIND_SENIOR_NAME;
                 break;
 
-            case TICKET_KIND_REDUCED:
-                $name = TICKET_KIND_REDUCED_NAME;
+            case self::TICKET_KIND_REDUCED:
+                $name = self::TICKET_KIND_REDUCED_NAME;
                 break;
             
             default:
-                $name = TICKET_KIND_NORMAL_NAME;
+                $name = self::TICKET_KIND_NORMAL_NAME;
                 break;
         }
         return $name;

@@ -65,8 +65,8 @@ class MbUser
 
     public function __construct()
     {
-        $this->firstname = 'empty';
-        $this->lastname = 'empty';
+        $this->firstname = '';
+        $this->lastname = '';
         $this->birthday = new \DateTime('now');
         $this->country = 'none';
         $this->ticket = null;
