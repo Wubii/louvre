@@ -42,10 +42,28 @@ class DefaultController extends Controller
 
                 $totalTickets = $nbTicket + $nbUsers;
 
+                // ATTENTION toute modification de la table MbDuration doit correspondre 
+                if($order->getDuration()->getId() == 2)
+                {
+                    if($order->getBookingDate()->format("Y/m/d") == $order->getVisiteDate()->format("Y/m/d"))
+                    {
+                        if(date("G:i:s", time()) >= "20:00:00")
+                        {
+                            $request->getSession()->getFlashBag()->add('danger', 'Vous ne pouvez pas réserver de billet "Journée" pour ce jour après 14h');
+                        
+                            return $this->render('default/index.html.twig', [
+                                'form' => $form->createView(),
+                                'base_dir' => realpath($this->getParameter('kernel.root_dir').'/..').DIRECTORY_SEPARATOR,
+                            ]);
+                        }
+                    }
+                }
+
                 // remplacer 1000 par const
                 if($totalTickets > 1000)
                 {
                     $request->getSession()->getFlashBag()->add('danger', 'Plus de places disponibles pour ce jour');
+                    
                     return $this->render('default/index.html.twig', [
                         'form' => $form->createView(),
                         'base_dir' => realpath($this->getParameter('kernel.root_dir').'/..').DIRECTORY_SEPARATOR,
@@ -56,7 +74,7 @@ class DefaultController extends Controller
                 {
                     $ticket = new MbTicket();
                     $ticket->setDate($order->getVisiteDate());
-                    $order->setReservationNumber();
+                    $order->setReservationNumber(uniqid());
                     // Pour vérifier un booléen, on le compare toujours à 0/false
                     // pas de convention qui dit que vrai = 1
                     if($user->getIsReduced() != 0)
