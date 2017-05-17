@@ -43,6 +43,7 @@ class DefaultController extends Controller
                 $totalTickets = $nbTicket + $nbUsers;
 
                 // ATTENTION toute modification de la table MbDuration doit correspondre 
+                // ATTENTION "journée = 1" / "demi-journée = 2"
                 if($order->getDuration()->getId() == 2)
                 {
                     if($order->getBookingDate()->format("Y/m/d") == $order->getVisiteDate()->format("Y/m/d"))
@@ -75,6 +76,7 @@ class DefaultController extends Controller
                     $ticket = new MbTicket();
                     $ticket->setDate($order->getVisiteDate());
                     $order->setReservationNumber(uniqid());
+
                     // Pour vérifier un booléen, on le compare toujours à 0/false
                     // pas de convention qui dit que vrai = 1
                     if($user->getIsReduced() != 0)
@@ -116,33 +118,61 @@ class DefaultController extends Controller
                         'order' => $order)
                 );
 
-                return new Response($emailView);
+                //return new Response($emailView);
 
-                /*$message = \Swift_Message::newInstance()
-                    ->setSubject('Vos billets pour le Louvre')
-                    ->setFrom('louvre@louvre-tickets.com')
-                    ->setTo($order->getEmail())
-                    ->setBody(
-                        $this->renderView('Emails/registration.html.twig',array(
-                            'order' => $order)
-                        ),
-                        'text/html'
+                $transport = \Swift_SmtpTransport::newInstance('smtp.gmail.com', 465, 'ssl')
+                  ->setUsername('wubii.wu')
+                  ->setPassword('wwemmorgbsphwxuq')
+                ;
+
+                $mailer = \Swift_Mailer::newInstance($transport);
+
+                // $logger = new \Swift_Plugins_Loggers_EchoLogger();
+                // $mailer->registerPlugin(new \Swift_Plugins_LoggerPlugin($logger));
+
+
+                $message = \Swift_Message::newInstance('Wonderful Subject')
+                  ->setFrom(array('wubii.wu@gmail.com' => 'Louvre'))
+                  ->setSubject('Vos billets pour le Louvre')
+                  ->setTo(array($order->getEmail()))
+                  ->setBody(
+                      $this->renderView('Emails/registration.html.twig',array(
+                        'order' => $order,
+                        'logo' => 'toto')
+                      ),
+                      'text/html'
                     );
-                    /*
-                     * If you also want to include a plaintext version of the message
-                    ->addPart(
-                        $this->renderView(
-                            'Emails/registration.txt.twig',
-                            array('name' => $name)
-                        ),
-                        'text/plain'
-                    )
-                    */
-               /* ;
-                $this->get('mailer')->send($message);
+
+                // Send the message
+                $result = $mailer->send($message);
+
+                // $message = \Swift_Message::newInstance()
+                //     ->setSubject('Vos billets pour le Louvre')
+                //     ->setFrom('wubii.wu@gmail.com')
+                //     ->setTo($order->getEmail())
+                //     ->setBody(
+                //         $this->renderView('Emails/registration.html.twig',array(
+                //             'order' => $order)
+                //         ),
+                //         'text/html'
+                //     );
+                    
+                //      * If you also want to include a plaintext version of the message
+                //     ->addPart(
+                //         $this->renderView(
+                //             'Emails/registration.txt.twig',
+                //             array('name' => $name)
+                //         ),
+                //         'text/plain'
+                //     )
+                    
+                // ;
+                // $result = $this->get('mailer')->send($message);
+
+                // //return new Response(print_r($result));
 
                 $request->getSession()->getFlashBag()->add('success', 'Vos places ont bien été réservées');
-                return $this->redirectToRoute('homepage');*/
+                return $this->redirectToRoute('homepage');
             }
         }
 

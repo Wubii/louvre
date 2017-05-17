@@ -4,13 +4,16 @@ namespace AppBundle\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 
 use AppBundle\Entity\MbTask;
 use AppBundle\Entity\MbTag;
+use AppBundle\Entity\MbPayment;
 
 use AppBundle\Form\MbTaskType;
 use AppBundle\Form\MbTagType;
+use AppBundle\Form\MbPaymentType;
 
 
 class TaskController extends Controller
@@ -20,25 +23,33 @@ class TaskController extends Controller
      */
     public function formAction(Request $request)
     {
-        $task = new MbTask();
+        $payment = new MbPayment();
 
-        $tag = new MbTag();
-        $tag->setName('tag');
-        $task->getTags()->add($tag);
-
-        $tag = new MbTag();
-        $tag->setName('tag');
-        $task->getTags()->add($tag);
-
-        $form = $this->get('form.factory')->create(MbTaskType::class, $task);
+        $form = $this->get('form.factory')->create(MbPaymentType::class, $payment);
 
         if($request->isMethod('POST'))
         {
             $form->handleRequest($request);
+
+            //return new Response('tartampion');
             
             if($form->isValid())
             {
-                return $this->redirectToRoute('homepage');
+                \Stripe\Stripe::setApiKey('sk_test_47A0sTmJ2aCxtYqAq6ye9DrK');
+
+                $tokenJson = \Stripe\Token::create(array(
+                    "card" => array(
+                        "number" => $payment->getCardNumber(),
+                        "exp_month" => $payment->getCardExpiryMonth(),
+                        "exp_year" => $payment->getCardExpiryYear(),
+                        "cvc" => $payment->getCardCVC()
+                    )));
+
+                $token = json_decode($tokenJson);
+
+//                $charge = \Stripe\Charge::create(array('amount' => 2000, 'currency' => 'usd', 'source' => $token['id'] ));
+
+                return new Response($tokenJson);
             }
         }
 
