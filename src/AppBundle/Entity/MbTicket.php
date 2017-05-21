@@ -175,7 +175,7 @@ class MbTicket
      */
     public function getTicketNumber()
     {
-        return strval($this->id);
+        return "LVMBCS" . sprintf("%06d", $this->id);
     }
 
     /**

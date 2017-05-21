@@ -54,9 +54,9 @@ class MbOrder
     private $users;
 
     /**
-     * @var int
+     * @var string
      *
-     * @ORM\Column(name="reservationNumber", type="integer")
+     * @ORM\Column(name="reservationNumber", type="string")
      */
     private $reservationNumber;
 
@@ -194,11 +194,11 @@ class MbOrder
      *
      * @return MbOrder
      */
-    public function setReservationNumber()
+    public function setReservationNumber($reservationNumber)
     {
-        $this->reservationNumber = 'abcdefghijklmnpqrstuvwxyzABCDEFGHIJKLMNPQRSTUVWXYZ123456789';
+        $this->reservationNumber = $reservationNumber;
 
-        return substr(str_shuffle($this->reservationNumber),0,6);
+        return $this;
     }
 
     /**
