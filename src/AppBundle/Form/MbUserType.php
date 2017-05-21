@@ -31,7 +31,7 @@ class MbUserType extends AbstractType
                 'label'  => 'Pays'
             ))
             ->add('isReduced', CheckboxType::class, array(
-                'label' => 'Tarif réduit',
+                'label' => 'Tarif réduit (sur présentation d\'un justificatif*)',
                 'required' => false
             ));
     }
