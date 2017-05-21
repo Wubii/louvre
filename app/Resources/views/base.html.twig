@@ -19,14 +19,13 @@
   <body>
   <div class="container-fluid" style="padding: 0">
     <div class="row" style="margin-right: 0">
-      <div role="navbar" class="mb-navbar">
-        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-2">
-          <div class=" navbar-brand">
-            <p style="text-shadow: h-pos v-pos (blur) (color);">LOUVRE</p>
+      <div role="navbar" class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container-fluid">
+          <!-- Brand and toggle get grouped for better mobile display -->
+          <div class="navbar-header">
+            <a class="navbar-brand" href="#">LOUVRE</a>
           </div>
-        </div>
-        <div class="col-xs-10 col-sm-10 col-md-10 col-lg-10">
-          <ul>
+          <ul class="nav navbar-nav">
             <li>
               <a href="/">Billeterie</a>
             </li>
@@ -56,6 +55,12 @@
 
   {% block body %}
   {% endblock %}
+
+  <footer class="footer navbar-inverse">
+    <div class="container-fluid">
+      <p>lskdgsldkgslgn</p>
+    </div>
+  </footer>
 
   <script type='text/javascript' src="{{ asset('js/jquery.js') }}"></script>
   <script type='text/javascript' src="{{ asset('js/jquery-ui.min.js') }}"></script>
