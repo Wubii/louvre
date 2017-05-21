@@ -110,6 +110,24 @@ class DefaultController extends Controller
                     $user->setTicket($ticket);
                 }
 
+                \Stripe\Stripe::setApiKey('sk_test_47A0sTmJ2aCxtYqAq6ye9DrK');
+
+                $token = \Stripe\Token::create(array(
+                    "card" => array(
+                        "number" => $order->getCardNumber(),
+                        "exp_month" => $order->getCardMonth(),
+                        "exp_year" => $order->getCardYear(),
+                        "cvc" => $order->getCardCVC()
+                    )));
+
+                $charge = \Stripe\Charge::create(array(
+                    'amount' => strval($order->getPrice()*100),
+                    'currency' => 'eur',
+                    'source' => $token->id 
+                ));
+
+                //return new Response($charge);
+
                 $em = $this->getDoctrine()->getManager();
                 $em->persist($order);
                 $em->flush();
@@ -145,31 +163,6 @@ class DefaultController extends Controller
 
                 // Send the message
                 $result = $mailer->send($message);
-
-                // $message = \Swift_Message::newInstance()
-                //     ->setSubject('Vos billets pour le Louvre')
-                //     ->setFrom('wubii.wu@gmail.com')
-                //     ->setTo($order->getEmail())
-                //     ->setBody(
-                //         $this->renderView('Emails/registration.html.twig',array(
-                //             'order' => $order)
-                //         ),
-                //         'text/html'
-                //     );
-                    
-                //      * If you also want to include a plaintext version of the message
-                //     ->addPart(
-                //         $this->renderView(
-                //             'Emails/registration.txt.twig',
-                //             array('name' => $name)
-                //         ),
-                //         'text/plain'
-                //     )
-                    
-                // ;
-                // $result = $this->get('mailer')->send($message);
-
-                // //return new Response(print_r($result));
 
                 $request->getSession()->getFlashBag()->add('success', 'Vos places ont bien été réservées');
                 return $this->redirectToRoute('homepage');
