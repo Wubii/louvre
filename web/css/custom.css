@@ -13,10 +13,18 @@ body {
 }
 
 .banner {
-	background-color: rgba(217, 217, 217, 0.9);
+	background-color: rgba(38, 38, 38, 0.9);
 	padding-bottom: 75px;
 	margin-bottom: 75px;
 	height: auto;
+}
+
+.banner, h2, p {
+	color: rgba(230, 230, 230, 0.9);
+}
+
+#banner1 {
+	margin-top: 100px;
 }
 
 /*-------------------------------------------------------------------------*/
@@ -24,22 +32,26 @@ body {
 /*-------------------------------------------------------------------------*/
 
 .mb-navbar {
-	background-color: rgba(217, 217, 217, 0.9);
+	background-color: rgba(38, 38, 38, 0.9);
+	color: rgba(230, 230, 230, 0.9);
 	margin-right: 0px;
 	margin-bottom: 75px;
 	height: 50px;
+	width: 100%;
+	position: fixed;
 }
 
 .mb-navbar > div > ul > li
 {
 	display: inline-block;
+	color: rgba(230, 230, 230, 0.9);
 	margin-top: 13px;
 	margin-right: 5px;
 }
 
 .mb-navbar > div > ul > li > a
 {
-	color: black;
+	color: rgba(230, 230, 230, 0.9);
 }
 
 #logo {
@@ -52,8 +64,20 @@ body {
 
 .banner-dbd {
 	background-color: rgba(217, 217, 217, 0.6);
+	color: rgba(230, 230, 230, 0.9);
 	margin-bottom: 75px;
 	height: 400px;
 }
 
+/*-------------------------------------------------------------------------*/
+/* FOOTER                                                                  */
+/*-------------------------------------------------------------------------*/
 
+.footer {
+	background-color: rgba(38, 38, 38, 0.9);
+    bottom: 0;
+    height: 60px;
+    line-height: 60px;
+    width: 100%;
+    position: fixed;
+}
