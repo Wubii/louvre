@@ -66,6 +66,14 @@ class MbOrder
      * @ORM\JoinColumn(name="duration_id", referencedColumnName="id")
      */
     private $duration;
+    
+    private $cardNumber;
+
+    private $cardMonth;
+
+    private $cardYear;
+
+    private $cardCVC;
 
     public function __construct()
     {
@@ -246,6 +254,103 @@ class MbOrder
 
         return $price;
     }
+
+    /**
+     * Set cardNumber
+     *
+     * @param integer $cardNumber
+     *
+     * @return MbOrder
+     */
+    public function setCardNumber($cardNumber)
+    {
+        $this->cardNumber = $cardNumber;
+
+        return $this;
+    }
+
+    /**
+     * Get cardNumber
+     *
+     * @return int
+     */
+    public function getCardNumber()
+    {
+        return $this->cardNumber;
+    }
+
+    /**
+     * Set cardMonth
+     *
+     * @param integer $cardMonth
+     *
+     * @return MbOrder
+     */
+    public function setCardMonth($cardMonth)
+    {
+        $this->cardMonth = $cardMonth;
+
+        return $this;
+    }
+
+    /**
+     * Get cardMonth
+     *
+     * @return int
+     */
+    public function getCardMonth()
+    {
+        return $this->cardMonth;
+    }
+
+    /**
+     * Set cardYear
+     *
+     * @param integer $cardYear
+     *
+     * @return MbOrder
+     */
+    public function setCardYear($cardYear)
+    {
+        $this->cardYear = $cardYear;
+
+        return $this;
+    }
+
+    /**
+     * Get cardYear
+     *
+     * @return int
+     */
+    public function getCardYear()
+    {
+        return $this->cardYear;
+    }
+
+    /**
+     * Set cardCVC
+     *
+     * @param integer $cardCVC
+     *
+     * @return MbOrder
+     */
+    public function setCardCVC($cardCVC)
+    {
+        $this->cardCVC = $cardCVC;
+
+        return $this;
+    }
+
+    /**
+     * Get cardCVC
+     *
+     * @return int
+     */
+    public function getCardCVC()
+    {
+        return $this->cardCVC;
+    }
+
 
 
 }
