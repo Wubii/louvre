@@ -2,10 +2,12 @@
 
 {% block body %}
 
-      {{ form_start(form) }}
-      {{ form_errors(form) }}
+  {{ form_start(form) }}
+  {{ form_errors(form) }}
+
+    <div class="container">
       <div class="row" style="margin-right: 0">
-        <div class="banner col-xs-offset-1 col-xs-10 col-sm-offset-1 col-sm-10 col-md-offset-1 col-md-10 col-lg-offset-1 col-lg-10">
+        <div id="banner1" class="banner col-xs-12 col-sm-12 col-md-12 col-lg-offset-2 col-lg-8">
           <h3 style="text-align: center">Quel jour souhaitez-vous venir ?</h3>   
           <div class="row">
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-offset-3 col-lg-5">
@@ -13,24 +15,32 @@
               <p>{{ form_row(form.duration) }}</p>
             </div>     
           </div>
-          <hr>
-          <h3 style="text-align: center">Votre adresse mail</h3>   
-          <div class="row">
-            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-offset-3 col-lg-5" style="text-align: center">
-              <p>{{form_row(form.email)}}</p>
-            </div>     
-          </div>
         </div>
       </div>
 
-    <div class="col-lg-3"></div>
+      <div class="row" style="margin-right: 0">
+        <div class="banner col-xs-12 col-sm-12 col-md-12 col-lg-offset-2 col-lg-8">          
+          <h3 style="text-align: center; margin-bottom: 50px">Votre adresse mail</h3>  
+          {{form(form.email)}}
+        </div>
+      </div>
 
       <div class="row" style="margin-right: 0">
-        <div class="banner col-lg-offset-1 col-lg-10">
-          <h2 style="text-align: center">Détails des participants</h2>
+        <div class="banner col-xs-12 col-sm-12 col-md-12 col-lg-offset-2 col-lg-8">
+          <h3 style="text-align: center">Détails des participants</h3>
           <p style="margin-top:50px">{{ form_widget(form.users) }}</p>
           <a href="#" id="add_user" class="btn btn-default pull-right" style="margin-right: 5px">Ajouter un participant</a>
-          <span class="pull-right">{{ form_widget(form.save) }}</span>
+        </div>
+      </div>
+
+      <div class="row" style="margin-right: 0">
+        <div class="banner col-xs-12 col-sm-12 col-md-12 col-lg-offset-2 col-lg-8">
+          <h3 style="text-align: center">Détails des participants</h3>
+          <p style="margin-top:50px">{{ form_row(form.cardNumber) }}</p>
+          <p style="margin-top:50px">{{ form_row(form.cardMonth) }}</p>
+          <p style="margin-top:50px">{{ form_row(form.cardYear) }}</p>
+          <p style="margin-top:50px">{{ form_row(form.cardCVC) }}</p>
+          <span class="pull-right" style="margin-right: 5px">{{ form_widget(form.save) }}</span>
         </div>
       </div>
       {{ form_end(form) }}
@@ -39,11 +49,28 @@
 
 {% block javascript %}
 
-  <script type="text/javascript"> $('#appbundle_mborder_visiteDate').datepicker({ dateFormat: 'dd/mm/yy' }); </script>
+  <script type="text/javascript"> 
+
+    $('#appbundle_mborder_visiteDate').datepicker({
+        dateFormat: 'dd/mm/yy',
+        monthNames: ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'],
+        firstDay: 1 ,
+        beforeShowDay: function(date) {
+          var day = date.getDay();
+          return [(day != 0)];
+        },
+        dayNamesMin: ['D', 'L', 'M', 'M', 'J', 'V', 'S'],
+        weekHeader: 'Sem.',
+        minDate: 0,
+        showAnim: "slide"
+    });
+
+  </script>
 
   <script type="text/javascript">
+  $( "#appbundle_mborder_users + div.form-group + label:first-child" ).text('Participant n°1');
   $(document).ready(function()
-  {
+  {    
     var $container = $('div#appbundle_mborder_users');
     var index = $container.find(':input').length;
 
@@ -65,7 +92,7 @@
     function addUser($container)
     {
       var template = $container.attr('data-prototype')
-        .replace(/__name__label__/g, 'Participant n°' + (index + 1))
+        .replace(/__name__label__/g, 'Participant n°' + (index-5))
         .replace(/__name__/g, index)
       ;
 
@@ -74,6 +101,7 @@
       addDeleteLink($prototype);
 
       $container.append($prototype);
+        //$( "label.control-label" ).remove();
 
       index++;
     }
