@@ -182,7 +182,15 @@ class DefaultController extends Controller
      * @Route("/getUsersPrice", name="getUsersPrice", options={"expose"=true})
      * @Method({"POST"})
      */
-    public function getUsersPriceAction($users, Request $request){
-        return new Response('blabla');
+    public function getUsersPriceAction(Request $request)
+    {
+        $users = json_decode($request->get('users'));
+
+        foreach ($users as $user) {
+            $price = MbTicket::getPriceFromBirthday(new \DateTime($user[2]), $user[3]);
+            array_push($user, $price);
+        }
+
+        return new Response(json_encode($users));
     }
 }

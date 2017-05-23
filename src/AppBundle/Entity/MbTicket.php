@@ -201,5 +201,73 @@ class MbTicket
     {
         return $this->date;
     }
+
+    static public function getKindFromBirthday($date, $isReduced)
+    {
+        $result = MbTicket::TICKET_KIND_NORMAL;
+        
+        if($isReduced != 0)
+        {
+            $result = MbTicket::TICKET_KIND_REDUCED;
+        }
+        else
+        {
+            $currentDate = new \DateTime('now');
+            $dateInterval = $currentDate->diff($date);
+            $age = $dateInterval->format('%y');
+
+            if($age <= 4)
+            {
+                $result = MbTicket::TICKET_KIND_BABY;
+            }
+            else if($age <= 12)
+            {
+                $result = MbTicket::TICKET_KIND_CHILD;
+            }
+            else if($age < 60)
+            {
+                $result = MbTicket::TICKET_KIND_NORMAL;
+            }
+            else
+            {
+                $result = MbTicket::TICKET_KIND_SENIOR;
+            }
+        }
+
+        return $result;
+    }
+
+    static public function getPriceFromBirthday($date, $isReduced)
+    {
+        $price = 0;
+        $kind = self::getKindFromBirthday($date, $isReduced);
+
+        switch ($kind) {
+            case self::TICKET_KIND_BABY:
+                $price = self::TICKET_KIND_BABY_PRICE;
+                break;
+
+            case self::TICKET_KIND_CHILD:
+                $price = self::TICKET_KIND_CHILD_PRICE;
+                break;
+
+            case self::TICKET_KIND_NORMAL:
+                $price = self::TICKET_KIND_NORMAL_PRICE;
+                break;
+
+            case self::TICKET_KIND_SENIOR:
+                $price = self::TICKET_KIND_SENIOR_PRICE;
+                break;
+
+            case self::TICKET_KIND_REDUCED:
+                $price = self::TICKET_KIND_REDUCED_PRICE;
+                break;
+            
+            default:
+                $price = self::TICKET_KIND_NORMAL_PRICE;
+                break;
+        }
+        return $price;
+    }
 }
 
