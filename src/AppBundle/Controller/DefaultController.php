@@ -3,6 +3,7 @@
 namespace AppBundle\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\HttpFoundation\Request;
@@ -173,6 +174,15 @@ class DefaultController extends Controller
         return $this->render('default/index.html.twig', [
             'form' => $form->createView(),
             'base_dir' => realpath($this->getParameter('kernel.root_dir').'/..').DIRECTORY_SEPARATOR,
+            'order' => $order
         ]);
+    }
+
+    /**
+     * @Route("/getUsersPrice", name="getUsersPrice", options={"expose"=true})
+     * @Method({"POST"})
+     */
+    public function getUsersPriceAction($users, Request $request){
+        return new Response('blabla');
     }
 }
