@@ -36,11 +36,12 @@ class MbOrderType extends AbstractType
                 'required' => true,
                 'expanded' => true,
                 'multiple' => false,
-                'label' => false
+                'label' => false,
             ))
 
             ->add('email', EmailType::class, array(
-                'label'  => false
+                'label'  => false,
+                'attr' => array('size' => '35')
             ))
             
             ->add('users', CollectionType::class, array(
@@ -48,19 +49,33 @@ class MbOrderType extends AbstractType
                 'allow_add'    => true,
                 'allow_delete' => true,
                 'by_reference' => false,
-                'label'        => false
+                'label'        => 'Participant n1'
             ))
             ->add('cardNumber', TextType::class, array(
-                'label'        => false
+                'label'        => 'N° de carte',
+                'attr' => array('class' => 'card')
             ))
             ->add('cardMonth', TextType::class, array(
-                'label'        => false,
+                'label'        => 'Mois',
+                'attr' => array(
+                    'placeholder' => 'mm',
+                    'class' => 'expiry'
+                )
             ))
             ->add('cardYear', TextType::class, array(
-                'label'        => false
+                'label'        => 'Année',
+                'attr' => array(
+                    'placeholder' => 'yyyy',
+                    'class' => 'expiry'
+                )
             ))
             ->add('cardCVC', TextType::class, array(
-                'label'        => false
+                'label'        => 'CVC',
+                'attr' => array(
+                    'placeholder' => 'cvc',
+                    'class' => 'cvc'
+                )
+                
             ))
             ->add('save', SubmitType::class, array(
                 'label' => 'Réserver'
