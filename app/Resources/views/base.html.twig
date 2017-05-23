@@ -17,53 +17,74 @@
 
   </head>  
   <body>
-  <div class="container-fluid" style="padding: 0">
-    <div class="row" style="margin-right: 0">
-      <div role="navbar" class="navbar navbar-inverse navbar-fixed-top">
-        <div class="container-fluid">
-          <!-- Brand and toggle get grouped for better mobile display -->
-          <div class="navbar-header">
-            <a class="navbar-brand" href="#">LOUVRE</a>
+    <div class="container-fluid" style="padding: 0">
+      <div class="row" style="margin-right: 0">
+        <div role="navbar" class="navbar navbar-inverse navbar-fixed-top">
+          <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header" style="text-align: center">
+              <a class="navbar-brand" href="/">LOUVRE</a>
+            </div><!-- 
+            <ul class="nav navbar-nav">
+              <li>
+                <a href="/">Billeterie</a>
+              </li>
+              <li>
+                <a href="/dashboard"><p>Dashboard</p></a>
+              </li>
+              <li>
+                <a href="/task"><p>Task</p></a>
+              </li>  
+            </ul>    -->       
           </div>
-          <ul class="nav navbar-nav">
-            <li>
-              <a href="/">Billeterie</a>
-            </li>
-            <li>
-              <a href="/dashboard"><p>Dashboard</p></a>
-            </li>
-            <li>
-              <a href="/task"><p>Task</p></a>
-            </li>  
-          </ul>          
         </div>
       </div>
     </div>
-  </div>
+
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="padding-left: 0; padding-right: 0">
+          <img src="/img/pano.jpg" style="width: 100%; margin-top: 50px;">
+        </div>
+      </div>
+    </div>
 
   {% for flashMessage in app.session.flashbag.get('success') %}
 
-    <div class="alert alert-success" role="alert">{{ flashMessage }}</div>
+    <div class="alert alert-success" role="alert" style="margin-bottom: 0; border-radius: 0">
+      <i id="close" class="fa fa-times-circle fa-2x pull-right" aria-hidden="true" style="cursor: pointer;"></i>
+      {{ flashMessage }}
+    </div>
 
   {% endfor %}
 
   {% for flashMessage in app.session.flashbag.get('danger') %}
 
-    <div class="alert alert-danger" role="alert">{{ flashMessage }}</div>
+    <div class="alert alert-danger" role="alert">
+      <i class="fa fa-times-circle fa-2x pull-right" aria-hidden="true"></i> 
+      {{ flashMessage }}
+    </div>
 
   {% endfor %}
 
   {% block body %}
   {% endblock %}
 
-  <footer class="footer navbar-inverse">
-    <div class="container-fluid">
-      <p>lskdgsldkgslgn</p>
-    </div>
-  </footer>
+  <footer class="footer"></footer>
+
 
   <script type='text/javascript' src="{{ asset('js/jquery.js') }}"></script>
   <script type='text/javascript' src="{{ asset('js/jquery-ui.min.js') }}"></script>
+
+  <script type="text/javascript">
+    
+  $('#close').click(function(e)
+  {
+    $('.alert-success').remove();
+    $('.alert-danger').remove();
+  })
+
+  </script>
   
   {% block javascript %}
   
