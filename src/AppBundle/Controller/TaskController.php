@@ -47,7 +47,7 @@ class TaskController extends Controller
 
                 $token = $tokenJson->__toArray(true);
 
-//                $charge = \Stripe\Charge::create(array('amount' => 2000, 'currency' => 'usd', 'source' => $token['id'] ));
+               $charge = \Stripe\Charge::create(array('amount' => 2000, 'currency' => 'usd', 'source' => $token['id'] ));
 
                 return new Response($tokenJson->id);
             }
