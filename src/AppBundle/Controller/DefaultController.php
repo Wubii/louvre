@@ -186,11 +186,11 @@ class DefaultController extends Controller
     {
         $users = json_decode($request->get('users'));
 
-        foreach ($users as $user) {
-            $price = MbTicket::getPriceFromBirthday(new \DateTime($user[2]), $user[3]);
-            array_push($user, $price);
+        foreach ($users as $key => $user) {
+            $price = MbTicket::getPriceFromBirthday(new \DateTime($users[$key][2]), $users[$key][3]);
+            array_push($users[$key], $price);
         }
-
+        
         return new Response(json_encode($users));
     }
 }
