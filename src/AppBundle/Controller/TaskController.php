@@ -45,11 +45,11 @@ class TaskController extends Controller
                         "cvc" => $payment->getCardCVC()
                     )));
 
-                $token = json_decode($tokenJson);
+                $token = $tokenJson->__toArray(true);
 
-//                $charge = \Stripe\Charge::create(array('amount' => 2000, 'currency' => 'usd', 'source' => $token['id'] ));
+               $charge = \Stripe\Charge::create(array('amount' => 2000, 'currency' => 'usd', 'source' => $token['id'] ));
 
-                return new Response($tokenJson);
+                return new Response($tokenJson->id);
             }
         }
 

@@ -1,11 +1,11 @@
 html {
   	margin:0;
   	padding:0;
+	width: 100%;
 }
 
 body {
-	width: 100%;
-  	background-image: url('../img/background2.jpg'); 
+  	background-image: url('../img/background-grey.jpg'); 
   	background-repeat: no-repeat;
   	background-attachment: fixed;
   	background-position: top;
@@ -13,10 +13,63 @@ body {
 }
 
 .banner {
-	background-color: rgba(217, 217, 217, 0.9);
-	padding-bottom: 75px;
-	margin-bottom: 75px;
+	background-color: rgba(38, 38, 38, 0.9);
+	padding-bottom: 20px;
+	margin-bottom: 20px;
 	height: auto;
+}
+
+.last-banner {
+	background-color: rgba(38, 38, 38, 0.9);
+	padding-bottom: 20px;
+	margin-bottom: 20px;
+	height: auto;
+	margin-bottom: 100px;
+}
+
+.banner, h3, p, label {
+	color: rgba(230, 230, 230, 0.9);
+}
+
+.banner > h3 {
+	text-align: center;
+	margin-top: 20px;
+	margin-bottom: 20px;
+}
+
+.order {
+	position: relative;
+	right: 95px;
+}
+
+.form-control {
+	border-radius: 0px;
+}
+	
+/*-------------------------------------------------------------------------*/
+/* FIELDS                                                                  */
+/*-------------------------------------------------------------------------*/
+
+#appbundle_mborder_duration > .radio > label > input {
+	margin-top: 0;
+}
+
+.field {
+	max-width: 400px;
+	margin-left: 27%;
+}
+
+.expiry {
+	max-width: 70px;
+	display: inline-block;
+}
+
+.cvc {
+	max-width: 70px;
+}
+
+.card {
+	max-width: 400px;	
 }
 
 /*-------------------------------------------------------------------------*/
@@ -24,26 +77,34 @@ body {
 /*-------------------------------------------------------------------------*/
 
 .mb-navbar {
-	background-color: rgba(217, 217, 217, 0.9);
+	background-color: rgba(38, 38, 38, 0.9);
+	color: rgba(230, 230, 230, 0.9);
 	margin-right: 0px;
 	margin-bottom: 75px;
 	height: 50px;
+	width: 100%;
+	position: fixed;
 }
 
 .mb-navbar > div > ul > li
 {
 	display: inline-block;
+	color: rgba(230, 230, 230, 0.9);
 	margin-top: 13px;
 	margin-right: 5px;
 }
 
 .mb-navbar > div > ul > li > a
 {
-	color: black;
+	color: rgba(230, 230, 230, 0.9);
 }
 
 #logo {
 	width: 63%;
+}
+
+.hidden {
+	visibility: hidden;
 }
 
 /*-------------------------------------------------------------------------*/
@@ -52,8 +113,20 @@ body {
 
 .banner-dbd {
 	background-color: rgba(217, 217, 217, 0.6);
+	color: rgba(230, 230, 230, 0.9);
 	margin-bottom: 75px;
 	height: 400px;
 }
 
+/*-------------------------------------------------------------------------*/
+/* FOOTER                                                                  */
+/*-------------------------------------------------------------------------*/
 
+.footer {
+	background-color: #222;
+    bottom: 0;
+    height: 64px;
+    width: 100%;
+    position: fixed;
+    margin: -15px;
+}

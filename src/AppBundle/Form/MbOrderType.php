@@ -11,6 +11,7 @@ use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -26,7 +27,7 @@ class MbOrderType extends AbstractType
             ->add('visiteDate', DateType::class, array(
                 'widget' => 'single_text',
                 'format' => 'dd/MM/yyyy',
-                'label'  => ' '
+                'label'  => false
             ))
 
             ->add('duration', EntityType::class, array(
@@ -35,11 +36,12 @@ class MbOrderType extends AbstractType
                 'required' => true,
                 'expanded' => true,
                 'multiple' => false,
-                'label' => ' '
+                'label' => false,
             ))
 
             ->add('email', EmailType::class, array(
-                'label'  => ' '
+                'label'  => false,
+                'attr' => array('size' => '35')
             ))
             
             ->add('users', CollectionType::class, array(
@@ -47,6 +49,33 @@ class MbOrderType extends AbstractType
                 'allow_add'    => true,
                 'allow_delete' => true,
                 'by_reference' => false,
+                'label'        => 'Participant n1'
+            ))
+            ->add('cardNumber', TextType::class, array(
+                'label'        => 'N° de carte',
+                'attr' => array('class' => 'card')
+            ))
+            ->add('cardMonth', TextType::class, array(
+                'label'        => 'Mois',
+                'attr' => array(
+                    'placeholder' => 'mm',
+                    'class' => 'expiry'
+                )
+            ))
+            ->add('cardYear', TextType::class, array(
+                'label'        => 'Année',
+                'attr' => array(
+                    'placeholder' => 'yyyy',
+                    'class' => 'expiry'
+                )
+            ))
+            ->add('cardCVC', TextType::class, array(
+                'label'        => 'CVC',
+                'attr' => array(
+                    'placeholder' => 'cvc',
+                    'class' => 'cvc'
+                )
+                
             ))
             ->add('save', SubmitType::class, array(
                 'label' => 'Réserver'

@@ -3,6 +3,8 @@ Options +FollowSymLinks
 <IfModule mod_rewrite.c>
     RewriteEngine On
 
+    RewriteRule ^private/(.+)$ private/$1 [L]
+
     RewriteCond %{REQUEST_FILENAME} !-f
 #    RewriteRule ^(.*)$ app.php [QSA,L]
     RewriteRule ^(.*)$ app_dev.php [QSA,L]

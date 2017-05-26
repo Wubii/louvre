@@ -2,48 +2,192 @@
 
 {% block body %}
 
-      {{ form_start(form) }}
-      {{ form_errors(form) }}
-      <div class="row" style="margin-right: 0">
-        <div class="banner col-xs-offset-1 col-xs-10 col-sm-offset-1 col-sm-10 col-md-offset-1 col-md-10 col-lg-offset-1 col-lg-10">
+  {{ form_start(form) }}
+  {{ form_errors(form) }}
+
+    <div class="col-lg-2 pull-right sidebar sidebar-nav banner order">
+      <h3 style="text-align:center;">
+        <i class="fa fa-shopping-basket" aria-hidden="true"></i>
+        Votre panier
+      </h3>
+      <table style="width: 100%">
+        <thead>
+          <th>Billets</th>
+          <th style="text-align: right">Prix</th>
+        </thead>
+        <tbody id="basket">
+        </tbody>
+      </table>
+    </div>
+
+    <div class="container">
+      <div class="row">
+        <div class="banner col-xs-12 col-sm-12 col-md-12 col-lg-9">
           <h3 style="text-align: center">Quel jour souhaitez-vous venir ?</h3>   
-          <div class="row">
-            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-offset-3 col-lg-5">
-              <p>{{ form_row(form.visiteDate) }}</p>
-              <p>{{ form_row(form.duration) }}</p>
-            </div>     
-          </div>
-          <hr>
-          <h3 style="text-align: center">Votre adresse mail</h3>   
-          <div class="row">
-            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-offset-3 col-lg-5" style="text-align: center">
-              <p>{{form_row(form.email)}}</p>
-            </div>     
-          </div>
+          <div class="col-xs-12 col-sm-12 col-md-12 col-lg-offset-3 col-lg-5">
+            <div>{{ form_row(form.visiteDate) }}</div>
+            <p>{{ form_row(form.duration) }}</p>
+          </div>     
         </div>
       </div>
 
-    <div class="col-lg-3"></div>
+      <div class="row">
+        <div class="banner col-xs-12 col-sm-12 col-md-12 col-lg-9">          
+          <h3 style="text-align: center;">Votre adresse mail</h3>  
+          {{ form(form.email, { 'attr': { 'class' : 'field' }}) }}
+        </div>
+      </div>
 
-      <div class="row" style="margin-right: 0">
-        <div class="banner col-lg-offset-1 col-lg-10">
-          <h2 style="text-align: center">Détails des participants</h2>
-          <p style="margin-top:50px">{{ form_widget(form.users) }}</p>
+      <div class="row"">
+        <div class="banner col-xs-12 col-sm-12 col-md-12 col-lg-9">
+          <h3 style="text-align: center">Détails des participants</h3>
+          <p>{{ form_widget(form.users) }}</p>
           <a href="#" id="add_user" class="btn btn-default pull-right" style="margin-right: 5px">Ajouter un participant</a>
-          <span class="pull-right">{{ form_widget(form.save) }}</span>
+          <a href="#payment-row" id="validate" class="btn btn-default pull-right" style="margin-right: 5px">Valider</a>
+        </div>
+      </div>
+
+      <div id="payment-row" class="row hidden">
+        <div class="banner col-xs-12 col-sm-12 col-md-12 col-lg-9">
+          <h3 style="text-align: center">Détails de paiement</h3>
+          <p>{{ form_row(form.cardNumber) }}</p>
+          <p>{{ form_row(form.cardMonth, { 'attr': { 'class' : 'expiry' }}) }} {{ form_row(form.cardYear, { 'attr': { 'class' : 'expiry' }}) }}</p>
+          <p>{{ form_row(form.cardCVC) }}</p>
+          <span class="pull-right" style="margin-right: 5px">{{ form_widget(form.save) }}</span>
         </div>
       </div>
       {{ form_end(form) }}
+      <div class="row" style="min-height: 100px"></div>
+    </div>
 
 {% endblock %}
 
 {% block javascript %}
 
-  <script type="text/javascript"> $('#appbundle_mborder_visiteDate').datepicker({ dateFormat: 'dd/mm/yy' }); </script>
+  <script type="text/javascript"> 
+
+    $('#appbundle_mborder_visiteDate').datepicker({
+        dateFormat: 'dd/mm/yy',
+        monthNames: ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'],
+        firstDay: 1 ,
+        beforeShowDay: function(date) {
+          var day = date.getDay();
+          return [(day != 0)];
+        },
+        dayNamesMin: ['D', 'L', 'M', 'M', 'J', 'V', 'S'],
+        weekHeader: 'Sem.',
+        minDate: 0,
+        showAnim: "slide"
+    });
+
+    // var disabledSpecificDays = ["2017/5/1", "2017/11/1", "2017/12/25"];
+
+    // function disableSpecificDays(date) {
+    //   var m = date.getMonth();
+    //   var d = date.getDate();
+    //   var y = date.getFullYear();
+     
+    //   for (var i = 0; i < disabledSpecificDays.length; i++) {
+    //     if ($.inArray(y + '/' + (m + 1) + '/' + d, disabledSpecificDays) != -1 || new Date() > date) {
+    //       return [false];
+    //     }
+    //   }
+    // }
+ 
+
+  </script>
 
   <script type="text/javascript">
+
+    function updateBasket()
+    {
+      $('#payment-row').removeClass('hidden');
+      
+      var users = [];
+
+      var htmlUsers = $('#appbundle_mborder_users > .form-group');
+      
+      htmlUsers.each(function()
+      {
+        var firstname = $(this).find('.form-group input[id$=firstname]').val();
+        var lastname = $(this).find('.form-group input[id$=lastname]').val();
+        var birthdayYear = $(this).find('.form-group select[id$=birthday_year]').val();
+        var birthdayMonth = $(this).find('.form-group select[id$=birthday_month]').val();
+        var birthdayDay = $(this).find('.form-group select[id$=birthday_day]').val();
+        var isReduced = $(this).find('.form-group input[id$=isReduced]:checked').val();
+        birthday = birthdayYear + "-" + birthdayMonth + "-" + birthdayDay;
+
+        user = [firstname, lastname, birthday, isReduced];
+        users.push(user);
+
+        $.post( "{{ path('getUsersPrice')}}", {users: JSON.stringify(users)})
+          .done(function( usersJSON )
+          {
+            var basket = $('#basket');
+            basket.empty();
+
+            var users = JSON.parse(usersJSON);
+            users.forEach(function(user)
+            {
+              var firstname = user[0];
+              var lastname = user[1];
+              var price = user[4];
+
+
+              var tr = document.createElement("tr");  
+
+              var tdName = document.createElement("td");
+              var textnode = document.createTextNode(firstname + " " + lastname);  
+              tdName.appendChild(textnode);
+              
+              var tdPrice = document.createElement("td");
+              tdPrice.setAttribute("style", "text-align:right"); 
+              var textnode = document.createTextNode(price);
+              tdPrice.appendChild(textnode);
+
+              tr.appendChild(tdName);
+              tr.appendChild(tdPrice);
+
+              basket.append(tr);
+
+              console.log(user[0]);
+              console.log(user[1]);
+              console.log(user[4]);
+            })
+
+          });
+      })
+    }
+            // <tr class="users">
+            //   <td>sfggddf</td>
+            //   <td style="text-align: right">18</td>
+            // </tr>
+            // <tr class="users">
+            //   <td>sfggddf</td>
+            //   <td style="text-align: right">18</td>
+            // </tr>
+            // <tr class="users" style="border-bottom: 1px solid white">
+            //   <td>sfggddf</td>
+            //   <td style="text-align: right">18</td>
+            // </tr>
+            // <tr>
+            //   <th>Total</th>
+            //   <td style="text-align: right">54</td>
+            // </tr>
+
+    $('#validate').click(function(e)
+    {
+      updateBasket();
+    })
+
+  </script>
+
+  <script type="text/javascript">
+  
+  $( "#appbundle_mborder_users + div.form-group + label:first-child" ).text('Participant n°1');
+  
   $(document).ready(function()
-  {
+  {    
     var $container = $('div#appbundle_mborder_users');
     var index = $container.find(':input').length;
 
@@ -65,8 +209,9 @@
     function addUser($container)
     {
       var template = $container.attr('data-prototype')
-        .replace(/__name__label__/g, 'Participant n°' + (index + 1))
+        .replace(/__name__label__/g, 'Participant n°' + (index-5))
         .replace(/__name__/g, index)
+
       ;
 
       var $prototype = $(template);
@@ -74,6 +219,7 @@
       addDeleteLink($prototype);
 
       $container.append($prototype);
+        //$( "label.control-label" ).remove();
 
       index++;
     }
