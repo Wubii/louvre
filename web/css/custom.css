@@ -37,9 +37,9 @@ body {
 	margin-bottom: 20px;
 }
 
-.order {
-	position: relative;
+#fixed-basket {
 	right: 95px;
+	top: 200px;
 }
 
 .form-control {
@@ -107,6 +107,10 @@ body {
 	visibility: hidden;
 }
 
+.disabled-field {
+
+}
+
 /*-------------------------------------------------------------------------*/
 /* DASHBOARD                                                               */
 /*-------------------------------------------------------------------------*/
@@ -128,5 +132,4 @@ body {
     height: 64px;
     width: 100%;
     position: fixed;
-    margin: -15px;
 }
