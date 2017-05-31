@@ -7,3 +7,23 @@ services:
     #service_name:
     #    class: AppBundle\Directory\ClassName
     #    arguments: ['@another_service_name', 'plain_value', '%parameter_name%']
+
+    mailer_management_service:
+        class: AppBundle\Service\MailerManagementService
+        arguments: []
+
+    stripe_management_service:
+        class: AppBundle\Service\StripeManagementService
+        arguments: []
+
+    price_by_user_management_service:
+        class: AppBundle\Service\PriceByUserManagementService
+        arguments: ['@ticket_kind_management_service']
+
+    ticket_limit_management_service:
+        class: AppBundle\Service\TicketLimitManagementService
+        arguments: []
+
+    ticket_kind_management_service:
+        class: AppBundle\Service\TicketKindManagementService
+        arguments: []
