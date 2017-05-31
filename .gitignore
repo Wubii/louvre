@@ -10,7 +10,11 @@
 !var/logs/.gitkeep
 !/var/sessions
 /var/sessions/*
-!var/sessions/.gitkeep
-!var/SymfonyRequirements.php
 /vendor/
 /web/bundles/
+composer.lock
+.DS_Store
+ var/SymfonyRequirements.php
+var/cache/.gitkeep
+var/logs/.gitkeep
+var/sessions/.gitkeep
