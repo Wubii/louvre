@@ -37,6 +37,7 @@ class MbOrderType extends AbstractType
                 'expanded' => true,
                 'multiple' => false,
                 'label' => false,
+                'data' => 0
             ))
 
             ->add('email', EmailType::class, array(
