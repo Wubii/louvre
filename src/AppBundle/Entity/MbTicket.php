@@ -30,7 +30,6 @@ class MbTicket
     const TICKET_KIND_SENIOR_PRICE  = 12;
     const TICKET_KIND_REDUCED_PRICE = 10;
 
-
     /**
      * @var int
      *
@@ -100,34 +99,7 @@ class MbTicket
      */
     public function getPrice()
     {
-        $price = 0;
-
-        switch ($this->kind) {
-            case self::TICKET_KIND_BABY:
-                $price = self::TICKET_KIND_BABY_PRICE;
-                break;
-
-            case self::TICKET_KIND_CHILD:
-                $price = self::TICKET_KIND_CHILD_PRICE;
-                break;
-
-            case self::TICKET_KIND_NORMAL:
-                $price = self::TICKET_KIND_NORMAL_PRICE;
-                break;
-
-            case self::TICKET_KIND_SENIOR:
-                $price = self::TICKET_KIND_SENIOR_PRICE;
-                break;
-
-            case self::TICKET_KIND_REDUCED:
-                $price = self::TICKET_KIND_REDUCED_PRICE;
-                break;
-            
-            default:
-                $price = self::TICKET_KIND_NORMAL_PRICE;
-                break;
-        }
-        return $price;
+        return self::getPriceFromKind($this->kind);
     }
 
     /**
@@ -137,34 +109,7 @@ class MbTicket
      */
     public function getName()
     {
-        $name = 0;
-
-        switch ($this->kind) {
-            case self::TICKET_KIND_BABY:
-                $name = self::TICKET_KIND_BABY_NAME;
-                break;
-
-            case self::TICKET_KIND_CHILD:
-                $name = self::TICKET_KIND_CHILD_NAME;
-                break;
-
-            case self::TICKET_KIND_NORMAL:
-                $name = self::TICKET_KIND_NORMAL_NAME;
-                break;
-
-            case self::TICKET_KIND_SENIOR:
-                $name = self::TICKET_KIND_SENIOR_NAME;
-                break;
-
-            case self::TICKET_KIND_REDUCED:
-                $name = self::TICKET_KIND_REDUCED_NAME;
-                break;
-            
-            default:
-                $name = self::TICKET_KIND_NORMAL_NAME;
-                break;
-        }
-        return $name;
+        return self::getNameFromKind($this->kind);
     }
 
 
@@ -236,11 +181,59 @@ class MbTicket
 
         return $result;
     }
-
+    
     static public function getPriceFromBirthday($date, $isReduced)
     {
-        $price = 0;
         $kind = self::getKindFromBirthday($date, $isReduced);
+
+        return self::getPriceFromKind($kind);
+    }
+
+    /**
+     * Get name
+     *
+     * @return int
+     */
+    static public function getNameFromKind($kind)
+    {
+        $name = "";
+
+        switch ($kind) {
+            case self::TICKET_KIND_BABY:
+                $name = self::TICKET_KIND_BABY_NAME;
+                break;
+
+            case self::TICKET_KIND_CHILD:
+                $name = self::TICKET_KIND_CHILD_NAME;
+                break;
+
+            case self::TICKET_KIND_NORMAL:
+                $name = self::TICKET_KIND_NORMAL_NAME;
+                break;
+
+            case self::TICKET_KIND_SENIOR:
+                $name = self::TICKET_KIND_SENIOR_NAME;
+                break;
+
+            case self::TICKET_KIND_REDUCED:
+                $name = self::TICKET_KIND_REDUCED_NAME;
+                break;
+            
+            default:
+                $name = self::TICKET_KIND_NORMAL_NAME;
+                break;
+        }
+        return $name;
+    }
+
+    /**
+     * Get price
+     *
+     * @return int
+     */
+    static public function getPriceFromKind($kind)
+    {
+        $price = 0;
 
         switch ($kind) {
             case self::TICKET_KIND_BABY:
@@ -267,6 +260,7 @@ class MbTicket
                 $price = self::TICKET_KIND_NORMAL_PRICE;
                 break;
         }
+
         return $price;
     }
 }

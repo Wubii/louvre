@@ -28,6 +28,7 @@ class MbOrderType extends AbstractType
                 'widget' => 'single_text',
                 'format' => 'dd/MM/yyyy',
                 'label'  => false
+
             ))
 
             ->add('duration', EntityType::class, array(
@@ -65,7 +66,7 @@ class MbOrderType extends AbstractType
             ->add('cardYear', TextType::class, array(
                 'label'        => 'Année',
                 'attr' => array(
-                    'placeholder' => 'yyyy',
+                    'placeholder' => 'yy',
                     'class' => 'expiry'
                 )
             ))

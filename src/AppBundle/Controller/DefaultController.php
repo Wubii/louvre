@@ -24,9 +24,9 @@ class DefaultController extends Controller
     public function indexAction(Request $request)
     {
         $order = new MbOrder();
-        $user = new MbUser();
+        //$user = new MbUser();
 
-        $order->getUsers()->add($user);
+        //$order->getUsers()->add($user);
 
         $form = $this->get('form.factory')->create(MbOrderType::class, $order);
 
@@ -37,138 +37,98 @@ class DefaultController extends Controller
             if($form->isValid())
             {
                 $repository = $this->getDoctrine()->getManager()->getRepository('AppBundle:MbTicket');
-                $date = $order->getVisiteDate();
+                $date = $order->getVisiteDate(); 
+                //return new Response(var_dump($request)); 
                 $nbTicket = $repository->getTicketNbByDate($date);
                 $nbUsers = $order->getNbUsers();
 
                 $totalTickets = $nbTicket + $nbUsers;
 
-                // ATTENTION toute modification de la table MbDuration doit correspondre 
-                // ATTENTION "journée = 1" / "demi-journée = 2"
-                if($order->getDuration()->getId() == 2)
-                {
-                    if($order->getBookingDate()->format("Y/m/d") == $order->getVisiteDate()->format("Y/m/d"))
-                    {
-                        if(date("G:i:s", time()) >= "20:00:00")
-                        {
-                            $request->getSession()->getFlashBag()->add('danger', 'Vous ne pouvez pas réserver de billet "Journée" pour ce jour après 14h');
-                        
-                            return $this->render('default/index.html.twig', [
-                                'form' => $form->createView(),
-                                'base_dir' => realpath($this->getParameter('kernel.root_dir').'/..').DIRECTORY_SEPARATOR,
-                            ]);
-                        }
-                    }
-                }
+/*-------------------------------------------------------------------------*/
+/* Disable reservation past 14h00                                          */
+/*-------------------------------------------------------------------------*/
+                
+                $flashBag = $request->getSession()->getFlashBag();
 
-                // remplacer 1000 par const
-                if($totalTickets > 1000)
+                $renderView = 
+
+                $onlyHalfDayService = $this->container->get('ticket_limit_management_service');
+                
+                if($onlyHalfDayService->getOnlyHalfDayService($order, $flashBag, $renderView) == false) 
+                {
+                    $flashBag->add('danger', 'Vous ne pouvez pas réserver de billet "Journée" pour ce jour après 14h');
+
+                    goto render;
+                }
+                 
+
+/*-------------------------------------------------------------------------*/
+/* Reservation / day < 1000                                                */
+/*-------------------------------------------------------------------------*/
+                
+                $maxTicketService = $this->container->get('ticket_limit_management_service');
+                
+                if($maxTicketService->getOnlyHalfDayService($order) == false)
                 {
                     $request->getSession()->getFlashBag()->add('danger', 'Plus de places disponibles pour ce jour');
-                    
-                    return $this->render('default/index.html.twig', [
-                        'form' => $form->createView(),
-                        'base_dir' => realpath($this->getParameter('kernel.root_dir').'/..').DIRECTORY_SEPARATOR,
-                    ]);
+
+                    goto render;
                 }
 
+/*-------------------------------------------------------------------------*/
+/* Price / user                                                            */
+/*-------------------------------------------------------------------------*/
                 foreach($order->getUsers() as $user)
                 {
                     $ticket = new MbTicket();
                     $ticket->setDate($order->getVisiteDate());
                     $order->setReservationNumber(uniqid());
 
-                    // Pour vérifier un booléen, on le compare toujours à 0/false
-                    // pas de convention qui dit que vrai = 1
-                    if($user->getIsReduced() != 0)
-                    {
-                        $ticket->setKind(MbTicket::TICKET_KIND_REDUCED);
-                    }
-                    else
-                    {
-                        $currentDate = new \DateTime('now');
-                        $dateInterval = $currentDate->diff($user->getBirthday());
-                        $age = $dateInterval->format('%y');
+                    $kind = MbTicket::getKindFromBirthday($user->getBirthday(), $user->getIsReduced());
 
-                        if($age <= 4)
-                        {
-                            $ticket->setKind(MbTicket::TICKET_KIND_BABY);
-                        }
-                        else if($age <= 12)
-                        {
-                            $ticket->setKind(MbTicket::TICKET_KIND_CHILD);
-                        }
-                        else if($age < 60)
-                        {
-                            $ticket->setKind(MbTicket::TICKET_KIND_NORMAL);
-                        }
-                        else
-                        {
-                            $ticket->setKind(MbTicket::TICKET_KIND_SENIOR);
-                        }
-                    }
+                    $ticket->setKind($kind);
 
                     $user->setTicket($ticket);
                 }
 
-                \Stripe\Stripe::setApiKey('sk_test_47A0sTmJ2aCxtYqAq6ye9DrK');
+/*-------------------------------------------------------------------------*/
+/* Stripe                                                                  */
+/*-------------------------------------------------------------------------*/
 
-                $token = \Stripe\Token::create(array(
-                    "card" => array(
-                        "number" => $order->getCardNumber(),
-                        "exp_month" => $order->getCardMonth(),
-                        "exp_year" => $order->getCardYear(),
-                        "cvc" => $order->getCardCVC()
-                    )));
-
-                $charge = \Stripe\Charge::create(array(
-                    'amount' => strval($order->getPrice()*100),
-                    'currency' => 'eur',
-                    'source' => $token->id 
-                ));
-
-                //return new Response($charge);
+                $stripeService = $this->container->get('stripe_management_service');
+                $stripeService->getStripeService($order); 
 
                 $em = $this->getDoctrine()->getManager();
                 $em->persist($order);
                 $em->flush();
 
+/*-------------------------------------------------------------------------*/
+/* Email                                                                   */
+/*-------------------------------------------------------------------------*/
+
                 $emailView = $this->renderView('Emails/registration.html.twig',array(
-                        'order' => $order)
-                );
+                    'order' => $order
+                ));
+                
+                $emailBody = $this->renderView('Emails/registration.html.twig',array(
+                    'order' => $order,
+                    'logo' => 'toto'
+                ));
 
-                //return new Response($emailView);
-
-                $transport = \Swift_SmtpTransport::newInstance('smtp.gmail.com', 465, 'ssl')
-                  ->setUsername('wubii.wu')
-                  ->setPassword('wwemmorgbsphwxuq')
-                ;
-
-                $mailer = \Swift_Mailer::newInstance($transport);
-
-                // $logger = new \Swift_Plugins_Loggers_EchoLogger();
-                // $mailer->registerPlugin(new \Swift_Plugins_LoggerPlugin($logger));
+                $mailerService = $this->container->get('mailer_management_service');
+                $mailerService->getMailerService($order, $emailBody);
 
 
-                $message = \Swift_Message::newInstance('Wonderful Subject')
-                  ->setFrom(array('wubii.wu@gmail.com' => 'Louvre'))
-                  ->setSubject('Vos billets pour le Louvre')
-                  ->setTo(array($order->getEmail()))
-                  ->setBody(
-                      $this->renderView('Emails/registration.html.twig',array(
-                        'order' => $order,
-                        'logo' => 'toto')
-                      ),
-                      'text/html'
-                    );
-
-                // Send the message
-                $result = $mailer->send($message);
+/*-------------------------------------------------------------------------*/
+/* Message flash                                                           */
+/*-------------------------------------------------------------------------*/                
 
                 $request->getSession()->getFlashBag()->add('success', 'Vos places ont bien été réservées');
                 return $this->redirectToRoute('homepage');
             }
         }
+
+render:
 
         // replace this example code with whatever you need
         return $this->render('default/index.html.twig', [
@@ -186,11 +146,13 @@ class DefaultController extends Controller
     {
         $users = json_decode($request->get('users'));
 
-        foreach ($users as $key => $user) {
+        foreach ($users as $key => $user)
+        {
             $price = MbTicket::getPriceFromBirthday(new \DateTime($users[$key][2]), $users[$key][3]);
+            
             array_push($users[$key], $price);
         }
-        
+
         return new Response(json_encode($users));
     }
 }
