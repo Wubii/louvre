@@ -1,16 +1,12 @@
 <?php
 
-namespace AppBundle\Entity;
+namespace AppBundle\Service;
 
-use Doctrine\ORM\Mapping as ORM;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Symfony\Component\HttpFoundation\Response;
 
-/**
- * MbTicket
- *
- * @ORM\Table(name="mb_ticket")
- * @ORM\Entity(repositoryClass="AppBundle\Repository\MbTicketRepository")
- */
-class MbTicket
+
+class TicketKindManagementService 
 {
     const TICKET_KIND_BABY    = 1;
     const TICKET_KIND_CHILD   = 2;
@@ -30,130 +26,14 @@ class MbTicket
     const TICKET_KIND_SENIOR_PRICE  = 12;
     const TICKET_KIND_REDUCED_PRICE = 10;
 
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
-    private $id;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="kind", type="integer")
-     */
-    private $kind;
-
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="date", type="date")
-     */
-    private $date;
-
-    public function __construct()
+    public function getKindFromBirthday($date, $isReduced)
     {
-        $this->date = new \DateTime('now');
-    }
-
-    /**
-     * Get id
-     *
-     * @return int
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
-
-    /**
-     * Set kind
-     *
-     * @param string $kind
-     *
-     * @return MbTicket
-     */
-    public function setKind($kind)
-    {
-        $this->kind = $kind;
-
-        return $this;
-    }
-
-    /**
-     * Get kind
-     *
-     * @return string
-     */
-    public function getKind()
-    {
-        return $this->kind;
-    }
-
-    /**
-     * Get price
-     *
-     * @return int
-     */
-    public function getPrice()
-    {
-        return self::getPriceFromKind($this->kind);
-    }
-
-    /**
-     * Get name
-     *
-     * @return int
-     */
-    public function getName()
-    {
-        return self::getNameFromKind($this->kind);
-    }
-
-
-    /**
-     * Get idNumber
-     *
-     * @return string
-     */
-    public function getTicketNumber()
-    {
-        return "LVMBCS" . sprintf("%06d", $this->id);
-    }
-
-    /**
-     * Set date
-     *
-     * @param \DateTime $date
-     *
-     * @return MbTicket
-     */
-    public function setDate($date)
-    {
-        $this->date = $date;
-
-        return $this;
-    }
-
-    /**
-     * Get date
-     *
-     * @return \DateTime
-     */
-    public function getDate()
-    {
-        return $this->date;
-    }
-
-    static public function getKindFromBirthday($date, $isReduced)
-    {
-        $result = MbTicket::TICKET_KIND_NORMAL;
+        $result = TicketKindManagementService::TICKET_KIND_NORMAL;
         
         if($isReduced != 0)
         {
-            $result = MbTicket::TICKET_KIND_REDUCED;
+            $result = TicketKindManagementService::TICKET_KIND_REDUCED;
         }
         else
         {
@@ -163,26 +43,26 @@ class MbTicket
 
             if($age <= 4)
             {
-                $result = MbTicket::TICKET_KIND_BABY;
+                $result = TicketKindManagementService::TICKET_KIND_BABY;
             }
             else if($age <= 12)
             {
-                $result = MbTicket::TICKET_KIND_CHILD;
+                $result = TicketKindManagementService::TICKET_KIND_CHILD;
             }
             else if($age < 60)
             {
-                $result = MbTicket::TICKET_KIND_NORMAL;
+                $result = TicketKindManagementService::TICKET_KIND_NORMAL;
             }
             else
             {
-                $result = MbTicket::TICKET_KIND_SENIOR;
+                $result = TicketKindManagementService::TICKET_KIND_SENIOR;
             }
         }
 
         return $result;
     }
     
-    static public function getPriceFromBirthday($date, $isReduced)
+    public function getPriceFromBirthday($date, $isReduced)
     {
         $kind = self::getKindFromBirthday($date, $isReduced);
 
@@ -194,7 +74,7 @@ class MbTicket
      *
      * @return int
      */
-    static public function getNameFromKind($kind)
+    public function getNameFromKind($kind)
     {
         $name = "";
 
@@ -231,7 +111,7 @@ class MbTicket
      *
      * @return int
      */
-    static public function getPriceFromKind($kind)
+    public function getPriceFromKind($kind)
     {
         $price = 0;
 
@@ -263,5 +143,12 @@ class MbTicket
 
         return $price;
     }
-}
 
+    public function getPriceByUserService($user, $ticket)
+    {
+        $kind = self::getKindFromBirthday($user->getBirthday(), $user->getIsReduced());
+
+        $ticket->setKind($kind);
+    }
+
+}

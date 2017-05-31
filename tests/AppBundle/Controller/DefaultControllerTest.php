@@ -2,17 +2,28 @@
 
 namespace Tests\AppBundle\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use AppBundle\Controller\Controller;
 
-class DefaultControllerTest extends WebTestCase
+class DefaultControllerTest extends Controller
 {
-    public function testIndex()
+    public function stripeOrderTest()
     {
-        $client = static::createClient();
+       \Stripe\Stripe::setApiKey('sk_test_47A0sTmJ2aCxtYqAq6ye9DrK');
 
-        $crawler = $client->request('GET', '/');
+        $token = \Stripe\Token::create(array(
+            "card" => array(
+                "number" => $order->setCardNumber('4242424242424242'),
+                "exp_month" => $order->setCardMonth('12'),
+                "exp_year" => $order->setCardYear('18'),
+                "cvc" => $order->setCardCVC('123')
+            )));
 
-        $this->assertEquals(200, $client->getResponse()->getStatusCode());
-        $this->assertContains('Welcome to Symfony', $crawler->filter('#container h1')->text());
+        $charge = \Stripe\Charge::create(array(
+            'amount' => '16',
+            'currency' => 'eur',
+            'source' => $token->id 
+        ));
+
+        //return new Response($charge);
     }
 }

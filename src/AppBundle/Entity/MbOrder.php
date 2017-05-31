@@ -350,8 +350,5 @@ class MbOrder
     {
         return $this->cardCVC;
     }
-
-
-
 }
 

@@ -21,7 +21,7 @@ class MbUserType extends AbstractType
             ->add('firstname', TextType::class, array(
                 'label'  => 'Prénom',
                 'attr' => array(
-                    'class' => 'focus blur')
+                    'class' => 'focus blur index')
             ))
             ->add('lastname', TextType::class, array(
                 'label'  => 'Nom',
