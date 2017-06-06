@@ -59,7 +59,27 @@
           </div>
         </div>
       {{ form_end(form) }}
+      <div class="row">
+        <div id="fixed-basket-down-row" class="banner hidden col-xs-12 col-sm-12 col-md-12 col-lg-9">
+          <div id="fixed-basket-down" class="basket">
+            <h3 style="text-align:center;">
+              <i class="fa fa-shopping-basket" aria-hidden="true"></i>
+              Votre panier
+            </h3>
+            <table style="width: 100%">
+              <thead>
+                <th>Billets</th>
+                <th style="text-align: right">Prix</th>
+              </thead>
+              <tbody id="basket">
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
       <div class="row" style="min-height: 100px"></div>
+
     </div>
 
 {% endblock %}
@@ -94,10 +114,45 @@
 
   <script type="text/javascript">
 
+    $(window).resize(function() {
+      if(!$( "#fixed-basket" ).hasClass( "hidden" ) 
+        || 
+        !$( "#fixed-basket-down" ).hasClass( "hidden" ) 
+        || 
+        !$( "#fixed-basket-down" ).hasClass( "hidden" ))
+      {
+        if (window.matchMedia("(min-width: 1200px)").matches) 
+        {
+          $('#fixed-basket').removeClass('hidden');
+          $('#fixed-basket-down').addClass('hidden');
+          $('#fixed-basket-down-row').addClass('hidden');
+        }
+        else
+        {
+          $('#fixed-basket-down').removeClass('hidden');
+          $('#fixed-basket-down-row').removeClass('hidden');
+          $('#fixed-basket').addClass('hidden');
+        }
+      }
+
+    });
+
     function updateBasket()
     {
       $('#payment-row').removeClass('hidden');
-      $('#fixed-basket').removeClass('hidden');
+
+      if (window.matchMedia("(min-width: 1200px)").matches) 
+      {
+        $('#fixed-basket').removeClass('hidden');
+        $('#fixed-basket-down').addClass('hidden');
+        $('#fixed-basket-down-row').addClass('hidden');
+      }
+      else
+      {
+        $('#fixed-basket-down').removeClass('hidden');
+        $('#fixed-basket-down-row').removeClass('hidden');
+        $('#fixed-basket').addClass('hidden');
+      }
       
       var users = [];
 
@@ -187,12 +242,16 @@
       setToGrey();  
     })
 
+    
+
     $('#order-edit').click(function(e)
     {
       $('#order-form').attr('disabled', null);
       $('#payment-row').addClass('hidden');
       $('#fixed-basket').addClass('hidden');
-
+      $('#fixed-basket-down').addClass('hidden');
+      $('#fixed-basket-down-row').addClass('hidden');
+      
     })
 
   </script>
@@ -209,7 +268,7 @@
         $('#fixed-basket').css({
           'position': 'fixed',
           'right': '95px',
-          'top': '182px'
+          'top': '320px'
         });
       }
       else 
@@ -217,25 +276,13 @@
         $('#fixed-basket').css({
           'position': 'absolute',
           'right': '95px',
-          'top': '556px'
+          'top': '694px'
         });
       }
       //console.log($('#fixed-basket').offset().top);
       console.log();
     }
   })
-
-  if (window.matchMedia("(max-width: 980px)").matches)
-  {
-    $('#appbundle_mborder__token').after('<div id="#fixed-basket" class="row" style="background-color: black; min-height: 100px"><div class="banner col-xs-12 col-sm-12 col-md-12 col-lg-9"></div></div>');
-
-    $('#fixed-basket').append('<h3 style="text-align:center;"><i class="fa fa-shopping-basket" aria-hidden="true"></i>Votre panier</h3><table style="width: 100%"><thead><th>Billets</th><th style="text-align: right">Prix</th></thead><tbody id="basket"></tbody></table>')
-    
-
-    $('#fixed-basket').css({
-      "background-color": "red"
-    });  
-  }
   </script>
 
   <script type="text/javascript">
