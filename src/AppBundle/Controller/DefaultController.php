@@ -96,9 +96,10 @@ class DefaultController extends Controller
 /*-------------------------------------------------------------------------*/
 
                 $stripeService = $this->container->get('stripe_management_service');
+
                 if($stripeService->getStripeService($order) == false)
                 {
-                    $request->getSession()->getFlashBag()->add('danger', 'Plus de places disponibles pour ce jour');
+                    $request->getSession()->getFlashBag()->add('danger', 'Erreur de transaction, vérifiez vos données bancaires');
 
                     goto render;
                 }
