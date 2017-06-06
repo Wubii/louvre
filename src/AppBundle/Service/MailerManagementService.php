@@ -20,7 +20,7 @@ class MailerManagementService
         $mailer->registerPlugin(new \Swift_Plugins_LoggerPlugin($logger));
 
 
-        $message = \Swift_Message::newInstance('Wonderful Subject')
+        $message = \Swift_Message::newInstance('Louvre')
           ->setFrom(array('wubii.wu@gmail.com' => 'Louvre'))
           ->setSubject('Vos billets pour le Louvre')
           ->setTo(array($order->getEmail()))
