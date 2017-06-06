@@ -19,12 +19,18 @@ class StripeManagementService
                 "cvc" => $order->getCardCVC()
             )));
 
-        $charge = \Stripe\Charge::create(array(
-            'amount' => strval($order->getPrice()*100),
-            'currency' => 'eur',
-            'source' => $token->id 
-        ));
+        try
+        {
+            $charge = \Stripe\Charge::create(array(
+                'amount' => strval($order->getPrice()*100),
+                'currency' => 'eur',
+                'source' => $token->id 
+            ));
+        }
+        catch(Exception $e) {
+            return false;
+        }
 
-        //return new Response($charge);
+        return true;
     }
 }
