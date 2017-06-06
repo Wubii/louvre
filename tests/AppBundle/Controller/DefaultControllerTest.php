@@ -2,28 +2,30 @@
 
 namespace Tests\AppBundle\Controller;
 
-use AppBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
-class DefaultControllerTest extends Controller
+class PostControllerTest extends WebTestCase
 {
-    public function stripeOrderTest()
+    public function testShowPost()
     {
-       \Stripe\Stripe::setApiKey('sk_test_47A0sTmJ2aCxtYqAq6ye9DrK');
+        $client = static::createClient();
 
-        $token = \Stripe\Token::create(array(
-            "card" => array(
-                "number" => $order->setCardNumber('4242424242424242'),
-                "exp_month" => $order->setCardMonth('12'),
-                "exp_year" => $order->setCardYear('18'),
-                "cvc" => $order->setCardCVC('123')
-            )));
+        $userArray = [];
 
-        $charge = \Stripe\Charge::create(array(
-            'amount' => '16',
-            'currency' => 'eur',
-            'source' => $token->id 
-        ));
+        array_push($userArray, array("Marion", "Battista", "1986-05-21", 0));
+        array_push($userArray, array("christophe", "smekens", "1981-05-25", 1));
+        array_push($userArray, array("Félicie", "Jeannet", "1920-05-21", 0));
+        array_push($userArray, array("Enfant", "Enfant", "2012-05-21", 0));
+        array_push($userArray, array("Bébé", "Bébé", "2017-01-21", 0));
 
-        //return new Response($charge);
+        $crawler = $client->request('POST', '/getUsersPrice', array('users' => json_encode($userArray)));
+
+        $userResponseArray = json_decode($client->getResponse()->getContent());
+
+        $this->assertEquals($userResponseArray[0][4], 16);
+        $this->assertEquals($userResponseArray[1][4], 10);
+        $this->assertEquals($userResponseArray[2][4], 12);
+        $this->assertEquals($userResponseArray[3][4], 8);
+        $this->assertEquals($userResponseArray[4][4], 0);
     }
 }
