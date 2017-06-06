@@ -4,7 +4,7 @@
 
   {{ form_start(form) }}
   {{ form_errors(form) }}
-      <div id="fixed-basket" class="col-lg-2 pull-right sidebar sidebar-nav banner hidden">
+      <div id="fixed-basket" class="col-lg-2 basket pull-right sidebar sidebar-nav banner hidden">
         <h3 style="text-align:center;">
           <i class="fa fa-shopping-basket" aria-hidden="true"></i>
           Votre panier
@@ -22,7 +22,7 @@
       <div class="container">
         <!-- <fieldset id="order-form"> -->
           <div class="row">
-            <div class="banner col-xs-12 col-sm-12 col-md-12 col-lg-9">
+            <div class="banner col-xs-12 col-sm-12 col-md-12 col-lg-9" style="margin-top: 20px">
               <h3 style="text-align: center">Quel jour souhaitez-vous venir ?</h3>   
               <div class="col-xs-12 col-sm-12 col-md-12 col-lg-offset-3 col-lg-5">
                 <div>{{ form_row(form.visiteDate) }}</div>
@@ -203,26 +203,39 @@
   {
     var scroll = $(document).scrollTop();
 
-    if(scroll > 374)
-    {
-      $('#fixed-basket').css({
-        'position': 'fixed',
-        'right': '95px',
-        'top': '182px'
-      });
+    if (window.matchMedia("(min-width: 980px)").matches) {
+      if(scroll > 374)
+      {
+        $('#fixed-basket').css({
+          'position': 'fixed',
+          'right': '95px',
+          'top': '182px'
+        });
+      }
+      else 
+      {
+        $('#fixed-basket').css({
+          'position': 'absolute',
+          'right': '95px',
+          'top': '556px'
+        });
+      }
+      //console.log($('#fixed-basket').offset().top);
+      console.log();
     }
-    else 
-    {
-      $('#fixed-basket').css({
-        'position': 'absolute',
-        'right': '95px',
-        'top': '556px'
-      });
-    }
-    //console.log($('#fixed-basket').offset().top);
-    console.log();
   })
 
+  if (window.matchMedia("(max-width: 980px)").matches)
+  {
+    $('#appbundle_mborder__token').after('<div id="#fixed-basket" class="row" style="background-color: black; min-height: 100px"><div class="banner col-xs-12 col-sm-12 col-md-12 col-lg-9"></div></div>');
+
+    $('#fixed-basket').append('<h3 style="text-align:center;"><i class="fa fa-shopping-basket" aria-hidden="true"></i>Votre panier</h3><table style="width: 100%"><thead><th>Billets</th><th style="text-align: right">Prix</th></thead><tbody id="basket"></tbody></table>')
+    
+
+    $('#fixed-basket').css({
+      "background-color": "red"
+    });  
+  }
   </script>
 
   <script type="text/javascript">
