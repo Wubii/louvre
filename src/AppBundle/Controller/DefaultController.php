@@ -96,7 +96,12 @@ class DefaultController extends Controller
 /*-------------------------------------------------------------------------*/
 
                 $stripeService = $this->container->get('stripe_management_service');
-                $stripeService->getStripeService($order); 
+                if($stripeService->getStripeService($order) == false)
+                {
+                    $request->getSession()->getFlashBag()->add('danger', 'Plus de places disponibles pour ce jour');
+
+                    goto render;
+                }
 
                 $em = $this->getDoctrine()->getManager();
                 $em->persist($order);
