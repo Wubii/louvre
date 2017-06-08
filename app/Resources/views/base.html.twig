@@ -44,28 +44,28 @@
     <div class="container-fluid">
       <div class="row">
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="padding-left: 0; padding-right: 0">
-            <img src="/img/pano.jpg" style="width: 100%; margin-top: 50px;">
+          {% for flashMessage in app.session.flashbag.get('success') %}
+
+            <div class="alert alert-success" role="alert" style="margin-bottom: 0; margin-top: 44px; border-radius: 0">
+              <i id="close" class="fa fa-times-circle fa-2x pull-right" aria-hidden="true" style="cursor: pointer;"></i>
+              {{ flashMessage }}
+            </div>
+
+          {% endfor %}
+
+          {% for flashMessage in app.session.flashbag.get('danger') %}
+
+            <div class="alert alert-danger" style="margin-bottom: 0; margin-top: 44px; border-radius: 0" role="alert">
+              <i class="fa fa-times-circle fa-2x pull-right" aria-hidden="true"></i> 
+              {{ flashMessage }}
+            </div>
+
+          {% endfor %}
+         
+          <img src="/img/napoleon_cut.jpeg" style="width: 100%;">
         </div>
       </div>
     </div>
-
-  {% for flashMessage in app.session.flashbag.get('success') %}
-
-    <div class="alert alert-success" role="alert" style="margin-bottom: 0; border-radius: 0">
-      <i id="close" class="fa fa-times-circle fa-2x pull-right" aria-hidden="true" style="cursor: pointer;"></i>
-      {{ flashMessage }}
-    </div>
-
-  {% endfor %}
-
-  {% for flashMessage in app.session.flashbag.get('danger') %}
-
-    <div class="alert alert-danger" role="alert">
-      <i class="fa fa-times-circle fa-2x pull-right" aria-hidden="true"></i> 
-      {{ flashMessage }}
-    </div>
-
-  {% endfor %}
 
   {% block body %}
   {% endblock %}
@@ -74,6 +74,10 @@
 
   <script type='text/javascript' src="{{ asset('js/jquery.js') }}"></script>
   <script type='text/javascript' src="{{ asset('js/jquery-ui.min.js') }}"></script>
+
+  <script type='text/javascript' src="{{ asset('js/index_manage_users.js') }}"></script>
+  <script type='text/javascript' src="{{ asset('js/index_datepicker.js') }}"></script>
+  <script type='text/javascript' src="{{ asset('js/index_basket.js') }}"></script>
 
   <script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
   <script src="{{ path('fos_js_routing_js', { callback: 'fos.Router.setData' }) }}"></script>

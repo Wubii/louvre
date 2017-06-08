@@ -5,6 +5,8 @@ namespace AppBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 
+use Symfony\Component\Validator\Constraints as Assert;
+
 /**
  * MbOrder
  *
@@ -26,6 +28,7 @@ class MbOrder
      * @var \DateTime
      *
      * @ORM\Column(name="visiteDate", type="date")
+     * @Assert\Date
      */
     private $visiteDate;
 
@@ -33,6 +36,7 @@ class MbOrder
      * @var \DateTime
      *
      * @ORM\Column(name="bookingDate", type="datetime")
+     * @Assert\Date
      */
     private $bookingDate;
 
@@ -40,6 +44,9 @@ class MbOrder
      * @var string
      *
      * @ORM\Column(name="email", type="string", length=255, nullable=true)
+     * @Assert\Email(
+     *     message = "The email '{{ value }}' is not a valid email.",
+     *     checkMX = true)
      */
     private $email;
 

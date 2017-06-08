@@ -4,7 +4,7 @@
 
   {{ form_start(form) }}
   {{ form_errors(form) }}
-      <div id="fixed-basket" class="col-lg-2 pull-right sidebar sidebar-nav banner hidden">
+      <div id="fixed-basket" class="col-lg-2 basket pull-right sidebar sidebar-nav banner hidden">
         <h3 style="text-align:center;">
           <i class="fa fa-shopping-basket" aria-hidden="true"></i>
           Votre panier
@@ -14,7 +14,7 @@
             <th>Billets</th>
             <th style="text-align: right">Prix</th>
           </thead>
-          <tbody id="basket">
+          <tbody class="basket-content">
           </tbody>
         </table>
       </div>
@@ -22,7 +22,7 @@
       <div class="container">
         <!-- <fieldset id="order-form"> -->
           <div class="row">
-            <div class="banner col-xs-12 col-sm-12 col-md-12 col-lg-9">
+            <div class="banner col-xs-12 col-sm-12 col-md-12 col-lg-9" style="margin-top: 20px">
               <h3 style="text-align: center">Quel jour souhaitez-vous venir ?</h3>   
               <div class="col-xs-12 col-sm-12 col-md-12 col-lg-offset-3 col-lg-5">
                 <div>{{ form_row(form.visiteDate) }}</div>
@@ -59,249 +59,31 @@
           </div>
         </div>
       {{ form_end(form) }}
+      <div class="row">
+        <div id="fixed-basket-down-row" class="banner hidden col-xs-12 col-sm-12 col-md-12 col-lg-9">
+          <div id="fixed-basket-down" class="basket">
+            <h3 style="text-align:center;">
+              <i class="fa fa-shopping-basket" aria-hidden="true"></i>
+              Votre panier
+            </h3>
+            <table style="width: 100%">
+              <thead>
+                <th>Billets</th>
+                <th style="text-align: right">Prix</th>
+              </thead>
+              <tbody class="basket-content">
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
       <div class="row" style="min-height: 100px"></div>
+
     </div>
 
 {% endblock %}
 
 {% block javascript %}
-
-  <script type="text/javascript"> 
-
-    $('#appbundle_mborder_visiteDate').datepicker({
-        dateFormat: 'dd/mm/yy',
-        monthNames: ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'],
-        firstDay: 1 ,
-        beforeShowDay: function(date) {
-          var day = date.getDay();
-          var disabledSpecificDays = ["05-01", "11-01", "12-25"];
-          var string = jQuery.datepicker.formatDate("mm-dd", date);
-
-          return [(day != 0) && (day != 2) && (disabledSpecificDays.indexOf(string) == -1)];
-        },
-        dayNamesMin: ['D', 'L', 'M', 'M', 'J', 'V', 'S'],
-        weekHeader: 'Sem.',
-        minDate: 0,
-        showAnim: "slide"
-    });
-
-    $.datepicker.regional['fr'];
-
-    var disabledSpecificDays = ["2017/05/1", "2017/11/1", "2017/12/25"]; 
-
-
-  </script>
-
-  <script type="text/javascript">
-
-    function updateBasket()
-    {
-      $('#payment-row').removeClass('hidden');
-      $('#fixed-basket').removeClass('hidden');
-      
-      var users = [];
-
-      var htmlUsers = $('#appbundle_mborder_users > .form-group');
-      
-      htmlUsers.each(function()
-      {
-        var firstname = $(this).find('.form-group input[id$=firstname]').val();
-        var lastname = $(this).find('.form-group input[id$=lastname]').val();
-        var birthdayYear = $(this).find('.form-group select[id$=birthday_year]').val();
-        var birthdayMonth = $(this).find('.form-group select[id$=birthday_month]').val();
-        var birthdayDay = $(this).find('.form-group select[id$=birthday_day]').val();
-        var isReduced = $(this).find('.form-group input[id$=isReduced]:checked').val();
-        birthday = birthdayYear + "-" + birthdayMonth + "-" + birthdayDay;
-
-        user = [firstname, lastname, birthday, isReduced];
-        users.push(user);
-
-        $.post( "{{ path('getUsersPrice')}}", {users: JSON.stringify(users)})
-          .done(function( usersJSON )
-          {
-            var basket = $('#basket');
-            basket.empty();
-
-            var users = JSON.parse(usersJSON);
-            var totalPrice = 0;
-
-            users.forEach(function(user)
-            {
-              var firstname = user[0];
-              var lastname = user[1];
-              var price = user[4];
-              totalPrice += parseInt(price);
-
-              var tr = document.createElement("tr");  
-
-              var tdName = document.createElement("td");
-              var textnode = document.createTextNode(firstname + " " + lastname);  
-              tdName.appendChild(textnode);
-              
-              var tdPrice = document.createElement("td");
-              tdPrice.setAttribute("style", "text-align:right"); 
-              var textnode = document.createTextNode(price);
-              tdPrice.appendChild(textnode);
-
-              tr.appendChild(tdName);
-              tr.appendChild(tdPrice);
-
-              basket.append(tr);
-
-
-
-              console.log(user[0]);
-              console.log(user[1]);
-              console.log(user[4]);
-            })
-
-            var trTotal = document.createElement("tr");
-
-            var tdName = document.createElement("td");
-            var textnode = document.createTextNode("TOTAL");  
-            tdName.appendChild(textnode);
-
-            var tdPrice = document.createElement("td");
-            tdPrice.setAttribute("style", "text-align:right"); 
-            var textnode = document.createTextNode(totalPrice);
-            tdPrice.appendChild(textnode);
-
-            trTotal.appendChild(tdName);
-            trTotal.appendChild(tdPrice);
-
-            basket.append(trTotal);
-            console.log(totalPrice);
-
-          });
-      })
-    }
-
-    function setToGrey()
-    {
-      $('#order-form').attr('disabled', true);
-    }
-
-    $('#validate').click(function(e)
-    {
-      updateBasket();
-      setToGrey();  
-    })
-
-    $('#order-edit').click(function(e)
-    {
-      $('#order-form').attr('disabled', null);
-      $('#payment-row').addClass('hidden');
-      $('#fixed-basket').addClass('hidden');
-
-    })
-
-  </script>
-
-  <script type="text/javascript">
-    
-  $(window).scroll(function()
-  {
-    var scroll = $(document).scrollTop();
-
-    if(scroll > 374)
-    {
-      $('#fixed-basket').css({
-        'position': 'fixed',
-        'right': '95px',
-        'top': '182px'
-      });
-    }
-    else 
-    {
-      $('#fixed-basket').css({
-        'position': 'absolute',
-        'right': '95px',
-        'top': '556px'
-      });
-    }
-    //console.log($('#fixed-basket').offset().top);
-    console.log();
-  })
-
-  </script>
-
-  <script type="text/javascript">
-  
-  $( "#appbundle_mborder_users + div.form-group + label:first-child" ).text('Participant n°1');
-
-  var index = 0;
-
-  function initIndex()
-  {
-    var $container = $('div#appbundle_mborder_users');
-    index = $container.find('.index').length;
-  }
-  
-  $(document).ready(function()
-  {    
-    var $container = $('div#appbundle_mborder_users');
-    initIndex();
-
-    $('#add_user').click(function(e)
-    {
-      addUser($container);
-      e.preventDefault();
-      return false;
-    });
-
-    console.log(index);
-
-    if(index == 0)
-    {
-      addUser($container)
-    }
-
-    function addUser($container)
-    {
-      var template = $container.attr('data-prototype')
-        .replace(/__name__label__/g, 'Participant n°' + (index + 1))
-        .replace(/__name__/g, index)
-
-      ;
-
-      var $prototype = $(template);
-
-      addDeleteLink($prototype);
-
-      $container.append($prototype);
-        //$( "label.control-label" ).remove();
-
-      index++;
-    }
-
-    function addDeleteLink($prototype)
-    {
-      var $deleteLink = $('<a href="#" class="remove-user btn btn-danger pull-right" style="margin-right:20px; margin-top:10px;">Supprimer ce visiteur</a>');
-
-      $prototype.append($deleteLink);
-
-      $deleteLink.click(function(e)
-      {
-        $prototype.remove();
-
-        initIndex();
-
-//        var $users = $('#appbundle_mborder_users + div.form-group + label:first-child');
-        var $users = $('#appbundle_mborder_users > div > label');
-        var i = 1;
-        console.log($users);
-
-        $users.each(function()
-        {
-          $(this).text('Participant n°' + i++);
-        })
-
-        e.preventDefault();
-        return false;
-      });
-    }
-
-  })
-</script>
 
 {% endblock %}

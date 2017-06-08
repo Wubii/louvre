@@ -9,9 +9,13 @@ class StripeManagementService
 {
     public function getStripeService($order)
     {
-        \Stripe\Stripe::setApiKey('sk_test_47A0sTmJ2aCxtYqAq6ye9DrK');
+        $result = true;
 
-        $token = \Stripe\Token::create(array(
+        try
+        {
+            \Stripe\Stripe::setApiKey('sk_test_47A0sTmJ2aCxtYqAq6ye9DrK');
+
+            $token = \Stripe\Token::create(array(
             "card" => array(
                 "number" => $order->getCardNumber(),
                 "exp_month" => $order->getCardMonth(),
@@ -19,12 +23,16 @@ class StripeManagementService
                 "cvc" => $order->getCardCVC()
             )));
 
-        $charge = \Stripe\Charge::create(array(
-            'amount' => strval($order->getPrice()*100),
-            'currency' => 'eur',
-            'source' => $token->id 
-        ));
+            $charge = \Stripe\Charge::create(array(
+                'amount' => strval($order->getPrice()*100),
+                'currency' => 'eur',
+                'source' => $token->id 
+            ));
+        }
+        catch(\Exception $e) {
+            $result = false;
+        }
 
-        //return new Response($charge);
+        return $result;
     }
 }

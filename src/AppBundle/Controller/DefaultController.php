@@ -96,7 +96,13 @@ class DefaultController extends Controller
 /*-------------------------------------------------------------------------*/
 
                 $stripeService = $this->container->get('stripe_management_service');
-                $stripeService->getStripeService($order); 
+
+                if($stripeService->getStripeService($order) == false)
+                {
+                    $request->getSession()->getFlashBag()->add('danger', 'Erreur de transaction, vérifiez vos données bancaires');
+
+                    goto render;
+                }
 
                 $em = $this->getDoctrine()->getManager();
                 $em->persist($order);
