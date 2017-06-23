@@ -130,15 +130,17 @@ function updateBasket()
   })
 }
 
-function disableForm()
-{
-  $('#order-form').attr('disabled', true);
-}
-
 $('#validate').click(function(e)
 {
-  updateBasket();
-  disableForm();  
+  console.log($('.not-empty'));
+  $('.not-empty').each(function(index)
+  {
+    console.log($(this).checkValidity());
+
+  })
+  //$('.not-empty')[1].checkValidity();
+  console.log($('.not-empty'));
+  updateBasket();    
 })
 
 $('#order-edit').click(function(e)

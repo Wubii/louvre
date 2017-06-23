@@ -27,7 +27,9 @@ class MbOrderType extends AbstractType
             ->add('visiteDate', DateType::class, array(
                 'widget' => 'single_text',
                 'format' => 'dd/MM/yyyy',
-                'label'  => false
+                'label'  => false,
+                'attr' => array(
+                    'class' => 'not-empty')
 
             ))
 
@@ -39,6 +41,8 @@ class MbOrderType extends AbstractType
                 'multiple' => false,
                 'label' => false,
                 'data' => 0
+                // 'attr' => array(
+                //     'class' => 'not-empty')
             ))
 
             ->add('email', EmailType::class, array(
