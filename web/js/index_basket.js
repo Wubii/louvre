@@ -21,7 +21,7 @@ $(window).scroll(function()
       });
     }
     //console.log($('#fixed-basket').offset().top);
-    console.log();
+    //console.log();
   }
 })
 
@@ -135,11 +135,9 @@ $('#validate').click(function(e)
   console.log($('.not-empty'));
   $('.not-empty').each(function(index)
   {
-    console.log($(this).checkValidity());
-
+    console.log($(this)[0].checkValidity());
   })
-  //$('.not-empty')[1].checkValidity();
-  console.log($('.not-empty'));
+
   updateBasket();    
 })
 
