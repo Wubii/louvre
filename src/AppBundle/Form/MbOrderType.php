@@ -29,8 +29,8 @@ class MbOrderType extends AbstractType
                 'format' => 'dd/MM/yyyy',
                 'label'  => false,
                 'attr' => array(
-                    'class' => 'not-empty')
-
+                    'class' => 'not-empty field'
+                )
             ))
 
             ->add('duration', EntityType::class, array(
@@ -41,13 +41,15 @@ class MbOrderType extends AbstractType
                 'multiple' => false,
                 'label' => false,
                 'data' => 0,
-                // 'attr' => array(
-                //     'class' => 'not-empty')
+                'attr' => array(
+                    'class' => 'field',
+                    'style' => 'margin-top:15px'
+                )
             ))
 
             ->add('email', EmailType::class, array(
                 'label'  => false,
-                'attr' => array('size' => '35'),
+                'attr' => array('class' => 'field'),
                 'data' => ''
             ))
             

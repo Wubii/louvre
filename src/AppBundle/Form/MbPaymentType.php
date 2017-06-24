@@ -20,22 +20,19 @@ class MbPaymentType extends AbstractType
     {
         $builder
             ->add('cardNumber', IntegerType::class, array(
-                'label'  => 'Numéro de carte bleue',
-                'attr'=> array('class'=>'card-number')
+                'attr'=> array(
+                    'class'=>'card-number')
             ))
 
             ->add('cardExpiryMonth', IntegerType::class, array(
-                'label'  => 'Date d\'expiration',
                 'attr'=> array('class'=>'card-expiry-month')
             ))
 
             ->add('cardExpiryYear', IntegerType::class, array(
-                'label'  => '',
                 'attr'=> array('class'=>'card-expiry-year')
             ))
 
             ->add('cardCVC', IntegerType::class, array(
-                'label'  => 'CVC',
                 'attr'=> array('class'=>'card-cvc')
             ))
 

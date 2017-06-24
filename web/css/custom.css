@@ -10,6 +10,7 @@ body {
   	background-attachment: fixed;
   	background-position: top;
   	background-size: cover; 
+  	color: rgba(230, 230, 230, 0.9);
 }
 
 .banner {
@@ -19,7 +20,7 @@ body {
 	height: auto;
 }
 
-.banner, h3, p, label {
+.banner > h3, p, label {
 	color: rgba(230, 230, 230, 0.9);
 }
 
@@ -38,8 +39,8 @@ body {
 }
 
 .field {
-	max-width: 400px;
-	margin-left: 27%;
+	width: 400px;
+	margin: auto;
 }
 
 .expiry {
@@ -48,7 +49,8 @@ body {
 }
 
 .cvc {
-	max-width: 70px;
+	max-width: 163px;
+	display: inline-block;
 }
 
 .card {

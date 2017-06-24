@@ -21,21 +21,30 @@ class MbUserType extends AbstractType
             ->add('firstname', TextType::class, array(
                 'label'  => 'Prénom',
                 'attr' => array(
-                    'class' => 'focus blur index not-empty')
+                    'class' => 'focus blur index not-empty',
+                    'style' => 'width:315px'
+                )
             ))
             ->add('lastname', TextType::class, array(
                 'label'  => 'Nom',
                 'attr' => array(
-                    'class' => 'focus blur not-empty')
+                    'class' => 'focus blur not-empty',
+                    'style' => 'width:315px'
+                )
             ))
             ->add('birthday', BirthdayType::class, array(
                 'label'  => 'Date de naissance',
                 'placeholder' => '--',
                 'attr' => array(
-                    'class' => 'focus blur is-not-empty')
+                    'class' => 'focus blur is-not-empty'
+                )
             ))
             ->add('country', CountryType::class, array(
-                'label'  => 'Pays'
+                'label'  => 'Pays',
+                'attr' => array(
+                    'style' => 'width:315px'
+                ),
+                'preferred_choices' => array('France', 'Royaume-uni')
             ))
             ->add('isReduced', CheckboxType::class, array(
                 'label' => 'Tarif réduit (sur présentation d\'un justificatif*)',
