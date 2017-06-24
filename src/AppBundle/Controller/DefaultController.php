@@ -54,7 +54,7 @@ class DefaultController extends Controller
                 
                 if($onlyHalfDayService->getOnlyHalfDayService($order, $flashBag, $renderView) == false) 
                 {
-                    $flashBag->add('danger', 'Vous ne pouvez pas réserver de billet "Journée" pour ce jour après 14h');
+                    $flashBag->add('danger', 'Après 14h, vous ne pouvez réserver que des billet "Demi-journée"');
 
                     goto render;
                 }
@@ -127,7 +127,7 @@ class DefaultController extends Controller
 /* Message flash                                                           */
 /*-------------------------------------------------------------------------*/                
 
-                $request->getSession()->getFlashBag()->add('success', 'Vos places ont bien été réservées');
+                $request->getSession()->getFlashBag()->add('success', 'Merci d\'avoir réservé vos place pour le Louvre. Un mail de confirmation vient de vous être envoyé.');
                 return $this->redirectToRoute('homepage');
             }
         }
