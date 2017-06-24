@@ -25,6 +25,13 @@ $(window).scroll(function()
   }
 })
 
+function hideBasket()
+{
+  $('#fixed-basket').addClass('hidden');
+  $('#fixed-basket-down').addClass('hidden');
+  $('#fixed-basket-down-row').addClass('hidden');
+}
+
 function hiddenClass(){
 
   if (window.matchMedia("(min-width: 1200px)").matches) 
@@ -132,15 +139,38 @@ function updateBasket()
 
 $('#validate').click(function(e)
 {
-  console.log($('.not-empty'));
+  var validate = true;
+
+  if ($('#appbundle_mborder_email')[0].checkValidity() == false)
+  {
+    validate = false;
+  }
+
   $('.not-empty').each(function(index)
   {
-    console.log($(this).checkValidity());
-
+    if($(this)[0].checkValidity() == false) 
+    {
+      validate = false;
+    };
   })
-  //$('.not-empty')[1].checkValidity();
-  console.log($('.not-empty'));
-  updateBasket();    
+
+  $('.is-not-empty > select').each(function(index)
+  {
+    if ($(this).val() == "")
+    {
+      validate = false;
+    }  
+  })
+
+  if(validate == true)
+  {
+    updateBasket();
+  }
+  else 
+  {
+    hideBasket();    
+    alert("Vous n'avez pas rempli les champs correctement");
+  }
 })
 
 $('#order-edit').click(function(e)

@@ -30,8 +30,9 @@ class MbUserType extends AbstractType
             ))
             ->add('birthday', BirthdayType::class, array(
                 'label'  => 'Date de naissance',
+                'placeholder' => '--',
                 'attr' => array(
-                    'class' => 'focus blur')
+                    'class' => 'focus blur is-not-empty')
             ))
             ->add('country', CountryType::class, array(
                 'label'  => 'Pays'

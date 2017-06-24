@@ -40,14 +40,15 @@ class MbOrderType extends AbstractType
                 'expanded' => true,
                 'multiple' => false,
                 'label' => false,
-                'data' => 0
+                'data' => 0,
                 // 'attr' => array(
                 //     'class' => 'not-empty')
             ))
 
             ->add('email', EmailType::class, array(
                 'label'  => false,
-                'attr' => array('size' => '35')
+                'attr' => array('size' => '35'),
+                'data' => ''
             ))
             
             ->add('users', CollectionType::class, array(

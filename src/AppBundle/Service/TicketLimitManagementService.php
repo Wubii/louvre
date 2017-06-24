@@ -7,8 +7,6 @@ use Symfony\Component\HttpFoundation\Response;
 
 class TicketLimitManagementService 
 {
-    // private $maxTickets = 1000;
-
     public function getOnlyHalfDayService($order)
     {
         // ATTENTION toute modification de la table MbDuration doit correspondre 
@@ -30,7 +28,6 @@ class TicketLimitManagementService
 
     public function getNumberMaxOfTicketService($totalTickets)
     {
-        // remplacer 1000 par const
         if($totalTickets > 1000)
         {    
             return false;

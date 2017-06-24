@@ -24,9 +24,6 @@ class DefaultController extends Controller
     public function indexAction(Request $request)
     {
         $order = new MbOrder();
-        //$user = new MbUser();
-
-        //$order->getUsers()->add($user);
 
         $form = $this->get('form.factory')->create(MbOrderType::class, $order);
 
@@ -37,8 +34,7 @@ class DefaultController extends Controller
             if($form->isValid())
             {
                 $repository = $this->getDoctrine()->getManager()->getRepository('AppBundle:MbTicket');
-                $date = $order->getVisiteDate(); 
-                //return new Response(var_dump($request)); 
+                $date = $order->getVisiteDate();
                 $nbTicket = $repository->getTicketNbByDate($date);
                 $nbUsers = $order->getNbUsers();
 
@@ -53,6 +49,8 @@ class DefaultController extends Controller
                 $renderView = 
 
                 $onlyHalfDayService = $this->container->get('ticket_limit_management_service');
+
+                print_r($onlyHalfDayService);
                 
                 if($onlyHalfDayService->getOnlyHalfDayService($order, $flashBag, $renderView) == false) 
                 {
