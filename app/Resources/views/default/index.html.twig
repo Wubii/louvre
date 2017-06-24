@@ -24,17 +24,15 @@
           <div class="row">
             <div class="banner col-xs-12 col-sm-12 col-md-12 col-lg-9" style="margin-top: 20px">
               <h3 style="text-align: center">Quel jour souhaitez-vous venir ?</h3>   
-              <div class="col-xs-12 col-sm-12 col-md-12 col-lg-offset-3 col-lg-5">
-                <div>{{ form_row(form.visiteDate) }}</div>
-                <p>{{ form_row(form.duration) }}</p>
-              </div>     
+              {{ form_widget(form.visiteDate) }}
+              {{ form_widget(form.duration) }}
             </div>
           </div>
 
           <div class="row">
             <div class="banner col-xs-12 col-sm-12 col-md-12 col-lg-9">          
               <h3 style="text-align: center;">Votre adresse mail</h3>  
-              {{ form(form.email, { 'attr': { 'class' : 'field' }}) }}
+              {{ form_widget(form.email) }}
             </div>
           </div>
 
@@ -51,11 +49,16 @@
         <div id="payment-row" class="row hidden">
           <div class="banner col-xs-12 col-sm-12 col-md-12 col-lg-9">
             <h3 style="text-align: center">Détails de paiement</h3>
-            <p>{{ form_row(form.cardNumber) }}</p>
-            <p>{{ form_row(form.cardMonth, { 'attr': { 'class' : 'expiry' }}) }} {{ form_row(form.cardYear, { 'attr': { 'class' : 'expiry' }}) }}</p>
-            <p>{{ form_row(form.cardCVC) }}</p>
+            <p>{{ form_widget(form.cardNumber, {'attr': { 'class': 'field', 'placeholder': 'Numéro de carte'}}) }}</p>
+            
+            <p class="field" style="margin-bottom: 10px">{{ form_widget(form.cardMonth, { 'attr': { 'class' : 'expiry', 'placeholder': 'MM'}}) }} 
+
+            {{ form_widget(form.cardYear, { 'attr': { 'class' : 'expiry', 'placeholder': 'AA' }}) }}</p>
+            
+            <p class="field" style="margin-bottom: 10px">{{ form_widget(form.cardCVC, { 'attr': { 'placeholder': 'Cryptogramme visuel' }}) }}</p>
+            
             <span class="pull-right" style="margin-right: 5px">{{ form_widget(form.save) }}</span>
-              <a href="#order-form" id="order-edit" class="btn btn-warning pull-right" style="margin-right: 5px">Modifier votre commande</a>
+              <!-- <a href="#order-form" id="order-edit" class="btn btn-warning pull-right" style="margin-right: 5px">Modifier votre commande</a> -->
           </div>
         </div>
       {{ form_end(form) }}
