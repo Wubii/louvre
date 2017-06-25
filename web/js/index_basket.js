@@ -119,6 +119,7 @@ function updateBasket()
         })
 
         var trTotal = document.createElement("tr");
+        trTotal.setAttribute("style", "border-top:1px solid white")
 
         var tdName = document.createElement("td");
         var textnode = document.createTextNode("TOTAL");  
