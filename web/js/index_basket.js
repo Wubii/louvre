@@ -4,7 +4,7 @@ $(window).scroll(function()
   var scroll = $(document).scrollTop();
 
   if (window.matchMedia("(min-width: 980px)").matches) {
-    if(scroll > 374)
+    if(scroll > 294)
     {
       $('#fixed-basket').css({
         'position': 'fixed',
@@ -17,7 +17,7 @@ $(window).scroll(function()
       $('#fixed-basket').css({
         'position': 'absolute',
         'right': '95px',
-        'top': '694px'
+        'top': '614px'
       });
     }
     //console.log($('#fixed-basket').offset().top);
@@ -83,59 +83,60 @@ function updateBasket()
 
     user = [firstname, lastname, birthday, isReduced];
     users.push(user);
+  })
 
-    // $.post( "{{ path('getUsersPrice')}}", {users: JSON.stringify(users)})
-    $.post( "/getUsersPrice", {users: JSON.stringify(users)})
-      .done(function( usersJSON )
+  console.log(JSON.stringify(users));
+  // $.post( "{{ path('getUsersPrice')}}", {users: JSON.stringify(users)})
+  $.post( "/getUsersPrice", {users: JSON.stringify(users)})
+    .done(function( usersJSON )
+    {
+      var basket = $('.basket-content');
+      basket.empty();
+
+      var users = JSON.parse(usersJSON);
+      var totalPrice = 0;
+
+      users.forEach(function(user)
       {
-        var basket = $('.basket-content');
-        basket.empty();
+        var firstname = user[0];
+        var lastname = user[1];
+        var price = user[4];
+        totalPrice += parseInt(price);
 
-        var users = JSON.parse(usersJSON);
-        var totalPrice = 0;
-
-        users.forEach(function(user)
-        {
-          var firstname = user[0];
-          var lastname = user[1];
-          var price = user[4];
-          totalPrice += parseInt(price);
-
-          var tr = document.createElement("tr");  
-
-          var tdName = document.createElement("td");
-          var textnode = document.createTextNode(firstname + " " + lastname);  
-          tdName.appendChild(textnode);
-          
-          var tdPrice = document.createElement("td");
-          tdPrice.setAttribute("style", "text-align:right"); 
-          var textnode = document.createTextNode(price);
-          tdPrice.appendChild(textnode);
-
-          tr.appendChild(tdName);
-          tr.appendChild(tdPrice);
-
-          basket.append(tr);
-        })
-
-        var trTotal = document.createElement("tr");
-        trTotal.setAttribute("style", "border-top:1px solid white")
+        var tr = document.createElement("tr");  
 
         var tdName = document.createElement("td");
-        var textnode = document.createTextNode("TOTAL");  
+        var textnode = document.createTextNode(firstname + " " + lastname);  
         tdName.appendChild(textnode);
-
+        
         var tdPrice = document.createElement("td");
         tdPrice.setAttribute("style", "text-align:right"); 
-        var textnode = document.createTextNode(totalPrice);
+        var textnode = document.createTextNode(price);
         tdPrice.appendChild(textnode);
 
-        trTotal.appendChild(tdName);
-        trTotal.appendChild(tdPrice);
+        tr.appendChild(tdName);
+        tr.appendChild(tdPrice);
 
-        basket.append(trTotal);
-      });
-  })
+        basket.append(tr);
+      })
+
+      var trTotal = document.createElement("tr");
+      trTotal.setAttribute("style", "border-top:1px solid white")
+
+      var tdName = document.createElement("td");
+      var textnode = document.createTextNode("TOTAL");  
+      tdName.appendChild(textnode);
+
+      var tdPrice = document.createElement("td");
+      tdPrice.setAttribute("style", "text-align:right"); 
+      var textnode = document.createTextNode(totalPrice);
+      tdPrice.appendChild(textnode);
+
+      trTotal.appendChild(tdName);
+      trTotal.appendChild(tdPrice);
+
+      basket.append(trTotal);
+    });
 }
 
 $('#validate').click(function(e)
